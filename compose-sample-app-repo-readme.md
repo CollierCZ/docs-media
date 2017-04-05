@@ -5,10 +5,11 @@ This is a sample website written in ASP.NET MVC 5 designed to showcase the funct
 * it uses the [Kentico Cloud Delivery .NET SDK](https://github.com/Kentico/delivery-sdk-net) to manage and retrieve content from Kentico Cloud
 * it uses [Kentico Cloud Personalization .NET SDK](https://github.com/Kentico/personalization-sdk-net) to track site visits. 
 * the views are enhanced with **Editable areas** to allow users to edit pages using the visual interface of Kentico Compose. 
-* it contains sample implementations of 2 custom widgets.
+* it contains sample implementations of 2 custom widgets - Contact us and Latest Blog Posts. 
 
-More information about Kentico Compose can be found in the [Kentico Compose Demo documentation](https://docs.kentico.com/display/RES/Kentico+Compose+Demo). 
+More information about Kentico Compose and all available materials can be found in the [Kentico Compose Demo documentation](https://docs.kentico.com/display/RES/Kentico+Compose+Demo). 
 
+For step-by-step instructions on how to run this application on your local machine for the purposes of the demo, see [Local development best practices](https://docs.kentico.com/display/RES/Local+development+best+practices).  
 
 You can register your account for free at <https://app.kenticocloud.com>.
 
@@ -26,7 +27,7 @@ The sample application will open in your browser.
 
 ## Connect your project
 
-If you already have a Kentico Cloud account, you can connect this sample application to a project of your own to access its unpublished content items, and track visitors on the site. For example, you can connect the application to your version of the Sample project.
+If you already have a Kentico Cloud account, you can connect this sample application to a project of your own. You will propably want to connect it to your Kentico Compose Demo project.
 
 1. Select your project in Kentico Cloud.
 1. Navigate to the **API keys** section.
@@ -38,14 +39,12 @@ If you already have a Kentico Cloud account, you can connect this sample applica
 
     * **Project ID**: Insert your project ID into the `ProjectId` application setting.
     * **Delivery Preview API**: Create a new application setting named `PreviewToken` in the `<appSettings>` section, and use the Delivery Preview API key as its value.
-    * **Personalization API**: Create a new application setting named `PersonalizationToken` in the `<appSettings>` section, and use the Personalization API key as its value.
 
     ```xml
     <appSettings>
         ...
         <add key="ProjectId" value="YOUR_PROJECT_ID" />
         <add key="PreviewToken" value="YOUR_DELIVERY_PREVIEW_API_KEY" />
-        <add key="PersonalizationToken" value="YOUR_PERSONALIZATION_API_KEY" />
         ...
     </appSettings>
     ```
@@ -53,7 +52,7 @@ If you already have a Kentico Cloud account, you can connect this sample applica
 1. Save the changes.
 1. Run the application.
 
-After you run the application, Kentico Cloud will track site visits and create new contacts when visitors submit a form. You will also be able to see all project content including the unpublished version of content items.
+After you run the application, you will be able to see all project content including the unpublished version of content items.
 
 For more information about the integrations with the Delivery API and Personalization API, see the following:
 
@@ -67,12 +66,3 @@ For more information about the integrations with the Delivery API and Personaliz
 1. Manage content in the content administration interface of your sample project.
 
 You can learn more about content editing with Kentico Cloud in our [Help Center](http://help.kenticocloud.com/).
-
-## Content delivery
-
-You can retrieve content either through the Kentico Cloud Delivery SDK or the Kentico Cloud Delivery API:
-
-* For published content, use `https://deliver.kenticocloud.com/PROJECT_ID/items`.
-* For unpublished content, use `https://preview-deliver.kenticocloud.com/PROJECT_ID/items`.
-
-For more details about Kentico Cloud APIs, see our [API reference](https://developer.kenticocloud.com/reference).
