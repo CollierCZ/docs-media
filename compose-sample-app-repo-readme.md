@@ -7,9 +7,9 @@ This is a sample website written in ASP.NET MVC 5 designed to showcase the funct
 * the views are enhanced with **Editable areas** to allow users to edit pages using the visual interface of Kentico Compose. 
 * it contains sample implementations of 2 custom widgets - Contact us and Latest Blog Posts. 
 
-More information about Kentico Compose and all available materials can be found in the [Kentico Compose Demo documentation](https://docs.kentico.com/display/RES/Kentico+Compose+Demo). 
+More information about Kentico Compose and all available materials can be found in the **[Kentico Compose Demo documentation](https://docs.kentico.com/display/RES/Kentico+Compose+Demo)**. 
 
-For step-by-step instructions on how to run this application on your local machine for the purposes of the demo, see **[Local development best practices](https://docs.kentico.com/display/RES/Local+development+best+practices)**.  
+For step-by-step instructions on how to run this application on your local machine for the purposes of the demo, see [Local development best practices](https://docs.kentico.com/display/RES/Local+development+best+practices).  
 
 You can register your account for free at <https://app.kenticocloud.com>.
 
