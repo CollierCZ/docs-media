@@ -4,7 +4,7 @@ This is a sample website written in ASP.NET MVC 5 designed to showcase the funct
 
 * it uses the [Kentico Cloud Delivery .NET SDK](https://github.com/Kentico/delivery-sdk-net) to manage and retrieve content from Kentico Cloud
 * the views are enhanced with **Editable areas** to allow users to edit pages using the visual interface of Kentico Compose. 
-* it contains sample implementations of 2 custom widgets - Contact us and Latest Blog Posts. 
+* it contains sample implementations of 2 **custom widgets** - Contact us and Latest Blog Posts. 
 
 More information about Kentico Compose and all available materials can be found in the **[Kentico Compose Demo documentation](https://docs.kentico.com/display/RES/Kentico+Compose+Demo)**. 
 
