@@ -1,6 +1,6 @@
 # Kentico Compose sample .NET MVC web application
 
-This is a sample website written in ASP.NET MVC 5 designed to showcase the functionality of Kentico Compose. It is an enhanced version of the Kentico Cloud sample application. 
+This is a sample website written in ASP.NET MVC 5 designed to showcase the functionality of Kentico Compose. It is an enhanced version of the [Kentico Cloud sample application](https://github.com/Kentico/cloud-sample-app-net). 
 
 * it uses the [Kentico Cloud Delivery .NET SDK](https://github.com/Kentico/delivery-sdk-net) to manage and retrieve content from Kentico Cloud
 * it uses [Kentico Cloud Personalization .NET SDK](https://github.com/Kentico/personalization-sdk-net) to track site visits. 
