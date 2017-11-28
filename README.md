@@ -23,46 +23,41 @@ The `ContentManagementClient` class is the main class of the SDK. Using this cla
 To create an instance of the class, you need to provide a [project ID](https://developer.kenticocloud.com/docs/using-delivery-api#section-getting-project-id) and a valid [Content Management API Key](https://developer.kenticocloud.com/v1/docs/importing-to-kentico-cloud#section-enabling-the-api-for-your-project).
 
 ```csharp
-private static ContentManagementOptions OPTIONS = new ContentManagementOptions() { ApiKey = "ew0...1eo", ProjectId = "bb6882a0-3088-405c-a6ac-4a0da46810b0" };
-// Initializes an instance of the DeliveryClient client
+var OPTIONS = new ContentManagementOptions() { ProjectId = "bb6882a0-3088-405c-a6ac-4a0da46810b0", ApiKey = "ew0...1eo" };
+// Initializes an instance of the ContentManagementClient client
 var client = new ContentManagementClient(OPTIONS);
 ```
 
-You can also provide the project ID and other parameters by passing the [`DeliveryOptions`](https://github.com/Kentico/delivery-sdk-net/blob/master/KenticoCloud.Delivery/Configuration/DeliveryOptions%20.cs) object to the class constructor. The `DeliveryOptions` object can be used to set the following parameters:
+Once you create a `ContentManagementClient`, you can start managing content in your project by calling methods on the client instance. See [Basic content item import](#basic-content-item-import) for details.
 
-* `PreviewApiKey` – sets the Delivery Preview API key.
-* `ProjectId` – sets the project identifier.
-* `UsePreviewApi` – determines whether to use the Delivery Preview API.
-* `WaitForLoadingNewContent` – makes the client instance wait while fetching updated content, useful when acting upon [webhook calls](https://developer.kenticocloud.com/docs/webhooks#section-requesting-new-content).
+### Basic content item import
 
-For advanced configuration options using Dependency Injection and ASP.NET Core Configuration API, see the SDK's [wiki](https://github.com/Kentico/delivery-sdk-net/wiki/Using-the-ASP.NET-Core-Configuration-API-and-DI-to-Instantiate-the-DeliveryClient).
+Importing content items is a 2 step process, using 2 separate methods:
 
-Once you create a `DeliveryClient`, you can start querying your project repository by calling methods on the client instance. See [Basic querying](#basic-querying) for details.
+* Creating an empty content item which serves as a wrapper for your content.
+* Adding content inside a language variant of the content item.
 
-### Filtering retrieved data
+In Kentico Cloud UI, the first step is the equivalent of clicking Create new content item while the second step would translate to filling in the content elements.
 
-The SDK supports full scale of the API querying and filtering capabilities as described in the [API reference](https://developer.kenticocloud.com/reference#filtering-content-items).
+Each content item can consist of several localized variants. **The content itself is always part of a specific language variant, even if your project only uses one language**.
+
+#### Creating an empty content item
 
 ```csharp
-// Retrieves a list of the specified elements from the first 10 content items of
-// the 'brewer' content type, ordered by the 'product_name' element value
-DeliveryItemListingResponse response = await client.GetItemsAsync(
-    new EqualsFilter("system.type", "brewer"),
-    new ElementsParameter("image", "price", "product_status", "processing"),
-    new LimitParameter(10),
-    new OrderParameter("elements.product_name")
+// Define a content type of the imported item by its codename
+var contentType = new ManageApiReference() { CodeName = "cafe" };
+// Define the imported content item
+var item = new ContentItemPostModel() { Name = "Brno", Type = contentType };
+
+// Create an instance of the Content Management client
+var client = new ContentManagementClient(OPTIONS);
+// Use it to import your content item to Kentico Cloud
+var responseItem = await client.AddContentItemAsync(item);
 );
 ```
 
-### Previewing unpublished content
+#### Adding localized content
 
-To retrieve unpublished content, you need to create a `DeliveryClient` with both Project ID and Preview API key. Each Kentico Cloud project has its own Preview API key. 
 
-```csharp
-// Note: Within a single project, we recommend that you work with only
-// either the production or preview Delivery API, not both.
-DeliveryClient client = new DeliveryClient("YOUR_PROJECT_ID", "YOUR_PREVIEW_API_KEY");
-```
 
-For more details, see [Previewing unpublished content using the Delivery API](https://developer.kenticocloud.com/docs/preview-content-via-api).
 
