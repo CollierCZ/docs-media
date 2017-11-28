@@ -23,14 +23,14 @@ The `ContentManagementClient` class is the main class of the SDK. Using this cla
 To create an instance of the class, you need to provide a [project ID](https://developer.kenticocloud.com/docs/using-delivery-api#section-getting-project-id) and a valid [Content Management API Key](https://developer.kenticocloud.com/v1/docs/importing-to-kentico-cloud#section-enabling-the-api-for-your-project).
 
 ```csharp
-var OPTIONS = new ContentManagementOptions() { ProjectId = "bb6882a0-3088-405c-a6ac-4a0da46810b0", ApiKey = "ew0...1eo" };
+ 
 // Initializes an instance of the ContentManagementClient client
 var client = new ContentManagementClient(OPTIONS);
 ```
 
 Once you create a `ContentManagementClient`, you can start managing content in your project by calling methods on the client instance. See [Basic content item import](#basic-content-item-import) for details.
 
-### Basic content item import
+### Importing content items
 
 Importing content items is a 2 step process, using 2 separate methods:
 
@@ -39,7 +39,7 @@ Importing content items is a 2 step process, using 2 separate methods:
 
 Each content item can consist of several localized variants. **The content itself is always part of a specific language variant, even if your project only uses one language**. See our [Importing to Kentico Cloud](https://developer.kenticocloud.com/v1/docs/importing-to-kentico-cloud#section-importing-your-content) tutorial for a more detailed explanation. 
 
-#### 1. Creating an empty content item
+#### 1. Creating a content item
 
 ```csharp
 // Define a content type of the imported item by its codename
@@ -54,7 +54,38 @@ var responseItem = await client.AddContentItemAsync(item);
 );
 ```
 
-#### 2. Adding localized content
+Kentico Cloud will generate an internal ID and codename for the (new and empty) content item and include it in the response. In the next step, we will add the actual (localized) content.
+
+
+#### 2. Adding language variants
+
+To add localized content, you have to specify: 
+
+* The content item you are importing into.
+* The language variant of the content item.
+* The content elements of the language variant you want to insert or update. Omitted elements will remain unchanged. 
+
+```csharp
+ private static Dictionary<string, object> ELEMENTS = new Dictionary<string, object> {
+    { "street", "Nove Sady 25" },
+    { "city", "Brno" },
+    { "country", "Czech Republic" },
+    { "state", "Jihomoravsky kraj" },
+    { "zip_code", "60200" },
+    { "phone", "+420 444 444 444" },
+    { "email", "brnocafe@kentico.com" }
+ };
+
+ var contentItemVariantUpdateModel = new ContentItemVariantUpdateModel() { Elements = ELEMENTS };
+
+ var itemIdentifier = ContentItemIdentifier.ByCodename("brno");
+ var variantIdentifier = ContentVariantIdentifier.ByLanguageCodename("en-US");
+ var identifier = new ContentItemVariantIdentifier(itemIdentifier, variantIdentifier);
+
+ var client = new ContentManagementClient(OPTIONS);
+ var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVariantUpdateModel);
+);
+```
 
 
 
