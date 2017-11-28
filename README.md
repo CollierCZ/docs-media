@@ -37,11 +37,9 @@ Importing content items is a 2 step process, using 2 separate methods:
 * Creating an empty content item which serves as a wrapper for your content.
 * Adding content inside a language variant of the content item.
 
-In Kentico Cloud UI, the first step is the equivalent of clicking Create new content item while the second step would translate to filling in the content elements.
+Each content item can consist of several localized variants. **The content itself is always part of a specific language variant, even if your project only uses one language**. See our [Importing to Kentico Cloud](https://developer.kenticocloud.com/v1/docs/importing-to-kentico-cloud#section-importing-your-content) tutorial for a more detailed explanation. 
 
-Each content item can consist of several localized variants. **The content itself is always part of a specific language variant, even if your project only uses one language**.
-
-#### Creating an empty content item
+#### 1. Creating an empty content item
 
 ```csharp
 // Define a content type of the imported item by its codename
@@ -56,7 +54,7 @@ var responseItem = await client.AddContentItemAsync(item);
 );
 ```
 
-#### Adding localized content
+#### 2. Adding localized content
 
 
 
