@@ -23,8 +23,8 @@ The `ContentManagementClient` class is the main class of the SDK. Using this cla
 To create an instance of the class, you need to provide a [project ID](https://developer.kenticocloud.com/docs/using-delivery-api#section-getting-project-id) and a valid [Content Management API Key](https://developer.kenticocloud.com/v1/docs/importing-to-kentico-cloud#section-enabling-the-api-for-your-project).
 
 ```csharp
- 
-// Initializes an instance of the ContentManagementClient client
+var OPTIONS = new ContentManagementOptions() { ProjectId = "bb6882a0-3088-405c-a6ac-4a0da46810b0", ApiKey = "ew0...1eo" }; 
+// Initialize an instance of the ContentManagementClient client
 var client = new ContentManagementClient(OPTIONS);
 ```
 
@@ -49,7 +49,7 @@ var item = new ContentItemPostModel() { Name = "Brno", Type = contentType };
 
 // Create an instance of the Content Management client
 var client = new ContentManagementClient(OPTIONS);
-// Use it to import your content item to Kentico Cloud
+// Add your content item to your project in Kentico Cloud
 var responseItem = await client.AddContentItemAsync(item);
 );
 ```
@@ -66,7 +66,7 @@ To add localized content, you have to specify:
 * The content elements of the language variant you want to insert or update. Omitted elements will remain unchanged. 
 
 ```csharp
- private static Dictionary<string, object> ELEMENTS = new Dictionary<string, object> {
+private static Dictionary<string, object> ELEMENTS = new Dictionary<string, object> {
     { "street", "Nove Sady 25" },
     { "city", "Brno" },
     { "country", "Czech Republic" },
@@ -74,16 +74,18 @@ To add localized content, you have to specify:
     { "zip_code", "60200" },
     { "phone", "+420 444 444 444" },
     { "email", "brnocafe@kentico.com" }
- };
+};
+var contentItemVariantUpdateModel = new ContentItemVariantUpdateModel() { Elements = ELEMENTS };
 
- var contentItemVariantUpdateModel = new ContentItemVariantUpdateModel() { Elements = ELEMENTS };
+// Specify the content item and the language varaint 
+var itemIdentifier = ContentItemIdentifier.ByCodename("brno");
+var variantIdentifier = ContentVariantIdentifier.ByLanguageCodename("en-US");
+var identifier = new ContentItemVariantIdentifier(itemIdentifier, variantIdentifier);
 
- var itemIdentifier = ContentItemIdentifier.ByCodename("brno");
- var variantIdentifier = ContentVariantIdentifier.ByLanguageCodename("en-US");
- var identifier = new ContentItemVariantIdentifier(itemIdentifier, variantIdentifier);
-
- var client = new ContentManagementClient(OPTIONS);
- var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVariantUpdateModel);
+// Initialize an instance of the ContentManagementClient client
+var client = new ContentManagementClient(OPTIONS);
+// Upsert a language variant of your content item
+var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVariantUpdateModel);
 );
 ```
 
