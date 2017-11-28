@@ -10,19 +10,22 @@
 The Kentico Cloud Content Management .NET SDK is a client library used for managing content in Kentico Cloud. It provides read/write access to your Kentico Cloud projects.  
 You can use the SDK in the form of a [NuGet package](https://www.nuget.org/packages/KenticoCloud.Delivery) to migrate your existing content into your Kentico Cloud project, or update content in your content items. 
 
+The Content Management SDK does not provide any content filtering options and is not optimized for content delivery. If you need to deliver larger amounts of content we recommend using the [Delivery SDK](https://github.com/Kentico/delivery-sdk-net) instead.
+
 ## Prerequisites
 
-To manage content in a Kentico Cloud project via the Content Management API, you first need to activate the API for the project. See our documentation on how you can [activate the Delivery API](https://developer.kenticocloud.com/docs/using-delivery-api#section-enabling-the-delivery-api-for-your-projects).
+To manage content in a Kentico Cloud project via the Content Management API, you first need to activate the API for the project. See our documentation on how you can [activate the Content Management API](https://developer.kenticocloud.com/v1/docs/importing-to-kentico-cloud#section-enabling-the-api-for-your-project).
 
-## Using the DeliveryClient
+## Using the ContentManagementClient
 
-The `DeliveryClient` class is the main class of the SDK. Using this class, you can retrieve content from your Kentico Cloud projects.
+The `ContentManagementClient` class is the main class of the SDK. Using this class, you can import, update, view and delete content in your Kentico Cloud projects. 
 
-To create an instance of the class, you need to provide a [project ID](https://developer.kenticocloud.com/docs/using-delivery-api#section-getting-project-id).
+To create an instance of the class, you need to provide a [project ID](https://developer.kenticocloud.com/docs/using-delivery-api#section-getting-project-id) and a valid [Content Management API Key](https://developer.kenticocloud.com/v1/docs/importing-to-kentico-cloud#section-enabling-the-api-for-your-project).
 
 ```csharp
+private static ContentManagementOptions OPTIONS = new ContentManagementOptions() { ApiKey = "ew0...1eo", ProjectId = "bb6882a0-3088-405c-a6ac-4a0da46810b0" };
 // Initializes an instance of the DeliveryClient client
-DeliveryClient client = new DeliveryClient("975bf280-fd91-488c-994c-2f04416e5ee3");
+var client = new ContentManagementClient(OPTIONS);
 ```
 
 You can also provide the project ID and other parameters by passing the [`DeliveryOptions`](https://github.com/Kentico/delivery-sdk-net/blob/master/KenticoCloud.Delivery/Configuration/DeliveryOptions%20.cs) object to the class constructor. The `DeliveryOptions` object can be used to set the following parameters:
