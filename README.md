@@ -20,7 +20,7 @@ To manage content in a Kentico Cloud project via the Content Management API, you
 
 The `ContentManagementClient` class is the main class of the SDK. Using this class, you can import, update, view and delete content in your Kentico Cloud projects. 
 
-To create an instance of the class, you need to provide a [project ID](https://developer.kenticocloud.com/docs/using-delivery-api#section-getting-project-id) and a valid [Content Management API Key](https://developer.kenticocloud.com/v1/docs/importing-to-kentico-cloud#section-enabling-the-api-for-your-project).
+To create an instance of the class, you need to provide a [project ID](https://developer.kenticocloud.com/docs/using-delivery-api#section-getting-project-id) and a valid [Content Management API Key](https://developer.kenticocloud.com/v1/docs/importing-to-kentico-cloud#importing-content-items).
 
 ```csharp
 var OPTIONS = new ContentManagementOptions() { ProjectId = "bb6882a0-3088-405c-a6ac-4a0da46810b0", ApiKey = "ew0...1eo" }; 
@@ -34,21 +34,22 @@ Once you create a `ContentManagementClient`, you can start managing content in y
 
 Importing content items is a 2 step process, using 2 separate methods:
 
-* Creating an empty content item which serves as a wrapper for your content.
-* Adding content inside a language variant of the content item.
+1. Creating an empty content item which serves as a wrapper for your content.
+2. Adding content inside a language variant of the content item.
 
 Each content item can consist of several localized variants. **The content itself is always part of a specific language variant, even if your project only uses one language**. See our [Importing to Kentico Cloud](https://developer.kenticocloud.com/v1/docs/importing-to-kentico-cloud#section-importing-your-content) tutorial for a more detailed explanation. 
 
 #### 1. Creating a content item
 
 ```csharp
+// Create an instance of the Content Management client
+var client = new ContentManagementClient(OPTIONS);
+
 // Define a content type of the imported item by its codename
 var contentType = new ManageApiReference() { CodeName = "cafe" };
 // Define the imported content item
 var item = new ContentItemPostModel() { Name = "Brno", Type = contentType };
 
-// Create an instance of the Content Management client
-var client = new ContentManagementClient(OPTIONS);
 // Add your content item to your project in Kentico Cloud
 var responseItem = await client.AddContentItemAsync(item);
 );
@@ -66,6 +67,8 @@ To add localized content, you have to specify:
 * The content elements of the language variant you want to insert or update. Omitted elements will remain unchanged. 
 
 ```csharp
+var client = new ContentManagementClient(OPTIONS);
+
 private static Dictionary<string, object> ELEMENTS = new Dictionary<string, object> {
     { "street", "Nove Sady 25" },
     { "city", "Brno" },
@@ -82,12 +85,57 @@ var itemIdentifier = ContentItemIdentifier.ByCodename("brno");
 var variantIdentifier = ContentVariantIdentifier.ByLanguageCodename("en-US");
 var identifier = new ContentItemVariantIdentifier(itemIdentifier, variantIdentifier);
 
-// Initialize an instance of the ContentManagementClient client
-var client = new ContentManagementClient(OPTIONS);
 // Upsert a language variant of your content item
 var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVariantUpdateModel);
 );
 ```
+
+TO-DO: Example of importing other types of elements besides text (Assets, Modular content, Taxonomy, Numbers...)
+
+### Importing assets
+
+Importing assets using Content Management SDK is a 3-step process:
+
+1. Upload a file to Kentico Cloud.
+2. Create a new asset using the given file reference.
+3. Link to the asset from a language variant of a content item. 
+
+#### 1. Upload a file 
+
+```csharp
+var client = new ContentManagementClient(OPTIONS);
+
+var stream = new MemoryStream(Encoding.UTF8.GetBytes("Hello world from CM API .NET SDK tests!"));
+var fileName = "Hello.txt";
+var contentType = "text/plain";
+
+var fileResult = await client.UploadFile(stream, fileName, contentType);
+```
+Kentico Cloud will generateand internal id that serves as pointer to your file. You will use it in the next step to create the actual asset. 
+
+#### 2. Create an asset 
+```csharp
+var asset = new AssetUpsertModel
+    {
+        FileReference = fileResult,
+        Descriptions = new List<AssetDescriptionsModel>()
+    };
+var externalId = "Hello";
+
+var assetResult = await client.UpsertAssetByExternalId(externalId, asset);
+```
+
+TO-DO: How to import asset descriptions
+TBD: Will there be no method for just creating an asset? 
+
+#### 3. Use the asset in a language variant 
+
+TO-DO
+
+### Importing modular and linked content
+
+TO-DO
+
 
 
 
