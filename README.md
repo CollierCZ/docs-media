@@ -138,6 +138,51 @@ TO-DO
 
 ### Viewing a content item
 
+```csharp
+// You can also specify the content item by its codename or external ID
+// var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
+// var identifier = ContentItemIdentifier.ByExternalId(EXTERNAL_ID);
+var identifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
+
+var contentItemReponse = await _client.GetContentItemAsync(identifier);
+```
+
+### Deleting a content item
+
+```csharp
+var itemToDelete = await PrepareItemToDelete();
+
+// You can also specify the content item by its codename or external ID
+// var identifier = ContentItemIdentifier.ByCodename(itemToDelete.CodeName);
+// var identifier = ContentItemIdentifier.ByExternalId(itemToDelete.ExternalId);
+var identifier = ContentItemIdentifier.ById(itemToDelete.Id);
+
+client.DeleteContentItemAsync(identifier);
+```
+
+### Updating a content item
+
+```csharp
+// You can also specify the content item by its codename
+// var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
+var identifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
+var newSitemapLocations = new List<ManageApiReference>();
+
+var item = new ContentItemUpdateModel() { Name = "New name", SitemapLocations = newSitemapLocations };
+
+var contentItemReponse = await _client.UpdateContentItemAsync(identifier, item);
+```
+
+### Upserting a content item by external ID
+
+```csharp
+var sitemapLocations = new List<ManageApiReference>();
+var type = new ManageApiReference() { CodeName = "cafe" };
+var item = new ContentItemUpsertModel() { Name = "New or updated name", SitemapLocations = sitemapLocations, Type = type };
+
+var contentItemResponse = await _client.UpsertContentItemByExternalIdAsync("EXTERNAL_ID", item);
+```
+
 ### Listing content items
 
 All at once:
@@ -147,7 +192,7 @@ All at once:
 
 With continuation:
 ```csharp
-var response = await _client.ListContentItemsAsync();
+var response = await client.ListContentItemsAsync();
 while (true)
 {
     foreach (var item in response)
@@ -160,6 +205,7 @@ while (true)
         break;
     }
     response = await response.GetNextPage();
+}
  ```
 
 
