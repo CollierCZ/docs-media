@@ -207,6 +207,30 @@ while (true)
     response = await response.GetNextPage();
 }
  ```
+ 
+ 
+### Upserting language variants
+
+```csharp
+ var contentItemVariantUpdateModel = new ContentItemVariantUpdateModel() { Elements = {
+    { "street", "Nove Sady 25" },
+    { "city", "Brno" },
+    { "country", "Czech Republic" }
+} };
+
+var itemIdentifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
+// var itemIdentifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
+// var itemIdentifier = ContentItemIdentifier.ByExternalId(EXTERNAL_ID);
+
+
+var languageIdentifier = LanguageIdentifier.ByCodename(EXISTING_LANGUAGE_CODENAME);
+// var languageIdentifier = LanguageIdentifier.ById(EXISTING_LANGUAGE_ID);
+
+var identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
+
+var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVariantUpdateModel);
+
+```
 
 
 
