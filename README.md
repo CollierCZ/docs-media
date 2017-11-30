@@ -48,7 +48,7 @@ var client = new ContentManagementClient(OPTIONS);
 // Define a content type of the imported item by its codename
 var contentType = new ManageApiReference() { CodeName = "cafe" };
 // Define the imported content item
-var item = new ContentItemPostModel() { Name = "Brno", Type = contentType };
+var item = new ContentItemCreateModel() { Name = "Brno", Type = contentType };
 
 // Add your content item to your project in Kentico Cloud
 var responseItem = await client.AddContentItemAsync(item);
@@ -82,8 +82,8 @@ var contentItemVariantUpdateModel = new ContentItemVariantUpdateModel() { Elemen
 
 // Specify the content item and the language varaint 
 var itemIdentifier = ContentItemIdentifier.ByCodename("brno");
-var variantIdentifier = ContentVariantIdentifier.ByLanguageCodename("en-US");
-var identifier = new ContentItemVariantIdentifier(itemIdentifier, variantIdentifier);
+var languageIdentifier = LanguageIdentifier.ByLanguageCodename("en-US");
+var identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
 // Upsert a language variant of your content item
 var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVariantUpdateModel);
@@ -105,11 +105,11 @@ Importing assets using Content Management SDK is a 3-step process:
 ```csharp
 var client = new ContentManagementClient(OPTIONS);
 
-var stream = new MemoryStream(Encoding.UTF8.GetBytes("Hello world from CM API .NET SDK tests!"));
+var stream = new MemoryStream(Encoding.UTF8.GetBytes("Hello world from CM API .NET SDK"));
 var fileName = "Hello.txt";
 var contentType = "text/plain";
 
-var fileResult = await client.UploadFile(stream, fileName, contentType);
+var fileResult = await client.UploadFileAsync(stream, fileName, contentType);
 ```
 Kentico Cloud will generateand internal id that serves as pointer to your file. You will use it in the next step to create the actual asset. 
 
@@ -122,11 +122,11 @@ var asset = new AssetUpsertModel
     };
 var externalId = "Hello";
 
-var assetResult = await client.UpsertAssetByExternalId(externalId, asset);
+var assetResult = await client.AddAssetAsync(asset);
 ```
 
 TO-DO: How to import asset descriptions
-TBD: Will there be no method for just creating an asset? 
+TBD: Do we use the basic AddAsset method in the introductiom, or do we push external IDs right away?
 
 #### 3. Use the asset in a language variant 
 
@@ -135,6 +135,33 @@ TO-DO
 ### Importing modular and linked content
 
 TO-DO
+
+### Viewing a content item
+
+### Listing content items
+
+All at once:
+```csharp
+ var response = await client.ListContentItemsAsync();
+ ```
+
+With continuation:
+```csharp
+var response = await _client.ListContentItemsAsync();
+while (true)
+{
+    foreach (var item in response)
+    {
+        // use your content item
+    }
+
+    if (!response.HasNextPage())
+    {
+        break;
+    }
+    response = await response.GetNextPage();
+ ```
+
 
 
 
