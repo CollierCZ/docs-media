@@ -16,6 +16,8 @@ The Content Management SDK does not provide any content filtering options and is
 
 To manage content in a Kentico Cloud project via the Content Management API, you first need to activate the API for the project. See our documentation on how you can [activate the Content Management API](https://developer.kenticocloud.com/v1/docs/importing-to-kentico-cloud#section-enabling-the-api-for-your-project).
 
+You also need to have the structure of you Kentico Cloud project prepared ahead of time, before importing your content. This means defining the content types of the imported items, optionally also setting your languages, taxonomy groups or sitemap locations. 
+
 ## Using the ContentManagementClient
 
 The `ContentManagementClient` class is the main class of the SDK. Using this class, you can import, update, view and delete content in your Kentico Cloud projects. 
@@ -150,6 +152,8 @@ TO-DO
 
 TO-DO
 
+## Content item methods
+
 ### Viewing a content item
 
 ```csharp
@@ -222,7 +226,8 @@ while (true)
 }
  ```
  
- 
+## Language variant methods
+
 ### Upserting language variants
 
 ```csharp
@@ -248,8 +253,7 @@ var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVar
 
 ### Viewing a language variant
 
-```chsarp
-
+```csharp
 var itemIdentifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
 // var itemIdentifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
 // var itemIdentifier = ContentItemIdentifier.ByExternalId(EXTERNAL_ID);
@@ -286,8 +290,42 @@ var itemIdentifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
 var languageIdentifier = LanguageIdentifier.ByCodename(EXISTING_LANGUAGE_CODENAME);
 // var languageIdentifier = LanguageIdentifier.ById(EXISTING_LANGUAGE_ID);
 
-await _client.DeleteContentItemVariantAsync(identifier);
+await client.DeleteContentItemVariantAsync(identifier);
 ```
+
+
+## Asset methods
+
+### List assets
+
+All at once:
+
+```csharp 
+var response = await client.ListAssetsAsync();
+```
+
+With continuation:
+
+```csharp
+
+var response = await _client.ListAssetsAsync();
+
+while (true)
+{
+    foreach (var asset in response)
+    {
+        // Use your asset
+    }
+
+    if (!response.HasNextPage())
+    {
+        break;
+    }
+    response = await response.GetNextPage();
+}
+```
+
+### Delete asset
 
 
 
