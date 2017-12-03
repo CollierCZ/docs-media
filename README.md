@@ -232,7 +232,43 @@ var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVar
 
 ```
 
+### Viewing a language variant
 
+```chsarp
+
+var itemIdentifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
+// var itemIdentifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
+// var itemIdentifier = ContentItemIdentifier.ByExternalId(EXTERNAL_ID);
+
+
+var languageIdentifier = LanguageIdentifier.ByCodename(EXISTING_LANGUAGE_CODENAME);
+// var languageIdentifier = LanguageIdentifier.ById(EXISTING_LANGUAGE_ID);
+
+var identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
+
+var response = await _client.GetContentItemVariantAsync(identifier);
+```
+
+### Listing language variants
+
+```csharp
+
+var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
+// var identifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
+// var identifier = ContentItemIdentifier.ByExternalId(EXTERNAL_ID);
+
+var responseVariants = await _client.ListContentItemVariantsAsync(identifier);
+```
+
+### Deleting language variants
+
+```csharp
+var itemIdentifier = ContentItemIdentifier.ById(itemResponse.Id);
+var languageIdentifier = LanguageIdentifier.ByCodename(EXISTING_LANGUAGE_CODENAME);
+var identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
+
+await _client.DeleteContentItemVariantAsync(identifier);
+```
 
 
 
