@@ -37,8 +37,8 @@ Once you create a `ContentManagementClient`, you can start managing content in y
 Most methods of the SDK accept an *Identifier object* that specifies which content item, language variant or asset you want to perform the given operation on. There are 3 types of identification you can use to create the identifier: 
 
 ```csharp
-var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
-var identifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
+var identifier = ContentItemIdentifier.ByCodename("brno");
+var identifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 var identifier = ContentItemIdentifier.ByExternalId(EXTERNAL_ID);
 ```
 
@@ -191,9 +191,9 @@ TO-DO: Does this work this way? Can I use ManageAPI Reference this way?
 #### Viewing a content item
 
 ```csharp
-var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
+var identifier = ContentItemIdentifier.ByCodename("brno");
 // var identifier = ContentItemIdentifier.ByExternalId(EXTERNAL_ID);
-// var identifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
+// var identifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 
 var contentItemReponse = await _client.GetContentItemAsync(identifier);
 ```
@@ -201,9 +201,9 @@ var contentItemReponse = await _client.GetContentItemAsync(identifier);
 #### Deleting a content item
 
 ```csharp
-var identifier = ContentItemIdentifier.ByCodename(itemToDelete.CodeName);
+var identifier = ContentItemIdentifier.ByCodename("brno");
 // var identifier = ContentItemIdentifier.ByExternalId(itemToDelete.ExternalId);
-// var identifier = ContentItemIdentifier.ById(itemToDelete.Id);
+// var identifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 
 client.DeleteContentItemAsync(identifier);
 ```
@@ -211,8 +211,8 @@ client.DeleteContentItemAsync(identifier);
 #### Updating a content item
 
 ```csharp
-var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
-// var identifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
+var identifier = ContentItemIdentifier.ByCodename("brno");
+// var identifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 
 var newSitemapLocations = new List<ManageApiReference>();
 var item = new ContentItemUpdateModel() { Name = "New name", SitemapLocations = newSitemapLocations };
@@ -266,13 +266,13 @@ while (true)
     { "country", "Czech Republic" }
 } };
 
-var itemIdentifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
-// var itemIdentifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
+var itemIdentifier = ContentItemIdentifier.ByCodename("brno");
+// var itemIdentifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 // var itemIdentifier = ContentItemIdentifier.ByExternalId(EXTERNAL_ID);
 
 
-var languageIdentifier = LanguageIdentifier.ByCodename(EXISTING_LANGUAGE_CODENAME);
-// var languageIdentifier = LanguageIdentifier.ById(EXISTING_LANGUAGE_ID);
+var languageIdentifier = LanguageIdentifier.ByCodename("en-US");
+// var languageIdentifier = LanguageIdentifier.ById("00000000-0000-0000-0000-000000000000");
 
 var identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
@@ -283,13 +283,13 @@ var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVar
 #### Viewing a language variant
 
 ```csharp
-var itemIdentifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
-// var itemIdentifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
+var itemIdentifier = ContentItemIdentifier.ByCodename("brno");
+// var itemIdentifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 // var itemIdentifier = ContentItemIdentifier.ByExternalId(EXTERNAL_ID);
 
 
-var languageIdentifier = LanguageIdentifier.ByCodename(EXISTING_LANGUAGE_CODENAME);
-// var languageIdentifier = LanguageIdentifier.ById(EXISTING_LANGUAGE_ID);
+var languageIdentifier = LanguageIdentifier.ByCodename("en-US");
+// var languageIdentifier = LanguageIdentifier.ById("00000000-0000-0000-0000-000000000000");
 
 var identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
@@ -300,8 +300,8 @@ var response = await _client.GetContentItemVariantAsync(identifier);
 
 ```csharp
 
-var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
-// var identifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
+var identifier = ContentItemIdentifier.ByCodename("brno");
+// var identifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 // var identifier = ContentItemIdentifier.ByExternalId(EXTERNAL_ID);
 
 var responseVariants = await _client.ListContentItemVariantsAsync(identifier);
@@ -311,13 +311,13 @@ var responseVariants = await _client.ListContentItemVariantsAsync(identifier);
 
 ```csharp
 
-var itemIdentifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
-// var itemIdentifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
+var itemIdentifier = ContentItemIdentifier.ByCodename("brno");
+// var itemIdentifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 // var itemIdentifier = ContentItemIdentifier.ByExternalId(EXTERNAL_ID);
 
 
-var languageIdentifier = LanguageIdentifier.ByCodename(EXISTING_LANGUAGE_CODENAME);
-// var languageIdentifier = LanguageIdentifier.ById(EXISTING_LANGUAGE_ID);
+var languageIdentifier = LanguageIdentifier.ByCodename("en-US");
+// var languageIdentifier = LanguageIdentifier.ById("00000000-0000-0000-0000-000000000000");
 
 await client.DeleteContentItemVariantAsync(identifier);
 ```
