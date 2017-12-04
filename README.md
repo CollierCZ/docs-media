@@ -160,9 +160,9 @@ This way, you canimport your content in any order and run the same process repea
 
 
 
-## Content item methods
+### Content item methods
 
-### Viewing a content item
+#### Viewing a content item
 
 ```csharp
 var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
@@ -172,7 +172,7 @@ var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
 var contentItemReponse = await _client.GetContentItemAsync(identifier);
 ```
 
-### Deleting a content item
+#### Deleting a content item
 
 ```csharp
 var identifier = ContentItemIdentifier.ByCodename(itemToDelete.CodeName);
@@ -182,7 +182,7 @@ var identifier = ContentItemIdentifier.ByCodename(itemToDelete.CodeName);
 client.DeleteContentItemAsync(identifier);
 ```
 
-### Updating a content item
+#### Updating a content item
 
 ```csharp
 var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
@@ -194,7 +194,7 @@ var item = new ContentItemUpdateModel() { Name = "New name", SitemapLocations = 
 var contentItemReponse = await _client.UpdateContentItemAsync(identifier, item);
 ```
 
-### Upserting a content item by external ID
+#### Upserting a content item by external ID
 
 ```csharp
 var sitemapLocations = new List<ManageApiReference>();
@@ -204,7 +204,7 @@ var item = new ContentItemUpsertModel() { Name = "New or updated name", SitemapL
 var contentItemResponse = await _client.UpsertContentItemByExternalIdAsync("EXTERNAL_ID", item);
 ```
 
-### Listing content items
+#### Listing content items
 
 All at once:
 ```csharp
@@ -229,9 +229,9 @@ while (true)
 }
  ```
  
-## Language variant methods
+### Language variant methods
 
-### Upserting language variants
+#### Upserting language variants
 
 ```csharp
  var contentItemVariantUpdateModel = new ContentItemVariantUpdateModel() { Elements = {
@@ -254,7 +254,7 @@ var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVar
 
 ```
 
-### Viewing a language variant
+#### Viewing a language variant
 
 ```csharp
 var itemIdentifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
@@ -270,7 +270,7 @@ var identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdenti
 var response = await _client.GetContentItemVariantAsync(identifier);
 ```
 
-### Listing language variants
+#### Listing language variants
 
 ```csharp
 
@@ -281,7 +281,7 @@ var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
 var responseVariants = await _client.ListContentItemVariantsAsync(identifier);
 ```
 
-### Deleting language variants
+#### Deleting language variants
 
 ```csharp
 
@@ -297,9 +297,9 @@ await client.DeleteContentItemVariantAsync(identifier);
 ```
 
 
-## Asset methods
+### Asset methods
 
-### Listing assets
+#### Listing assets
 
 All at once:
 
@@ -328,7 +328,7 @@ while (true)
 }
 ```
 
-#### Uploading a file 
+##### Uploading a file 
 
 ```csharp
 var client = new ContentManagementClient(OPTIONS);
@@ -340,7 +340,7 @@ var contentType = "text/plain";
 var fileResult = await client.UploadFileAsync(stream, fileName, contentType);
 ```
 
-### Upserting an asset using external ID 
+#### Upserting an asset using external ID 
 ```csharp
 var asset = new AssetUpsertModel
 {
@@ -352,7 +352,7 @@ var externalId = "Ext-Asset-123-png";
 var assetResult = await _client.UpsertAssetByExternalIdAsync(externalId, asset);
 ```
 
-### Uploading asset from a file system in a single step (?)
+#### Uploading asset from a file system in a single step (?)
 
 ```csharp 
 var descriptions = new List<AssetDescriptionsModel>();
@@ -363,7 +363,7 @@ var contentType = "image/png";
 var assetResult = await _client.CreateAssetAsync(new FileContentSource(filePath, contentType), descriptions);
 ```
 
-### Delete an asset
+#### Deleting an asset
 
 ```csharp
 client.DeleteAssetAsync(AssetIdentifier.ById("ASSET_ID"));
