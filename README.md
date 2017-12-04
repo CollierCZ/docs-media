@@ -150,7 +150,15 @@ TO-DO
 
 ### Importing modular and linked content
 
-TO-DO
+The content you are importing will often contain references to other pieces of imported content. A content item can referece assets or contain pointers other content items as modular content or links. To avoid having to import objects in a specific order (and solve problems with cyclical dependencies), you can use **external IDs** to reference non-existent (not-yet-imported) content. 
+
+1. Define external IDs for all content you want to import in advance. 
+2. When referencing another piece of content, use its external ID. 
+3. Import your content (make sure to use upsert methods with external ID). All references will resolve at the end.
+
+This way, you canimport your content in any order and run the same process repeatedly to keep your project up to date. 
+
+
 
 ## Content item methods
 
@@ -383,6 +391,6 @@ Optional:
 
 ## Feedback & Contributing
 
-Check out the [contributing](https://github.com/Kentico/delivery-sdk-net/blob/master/CONTRIBUTING.md) page to see the best places to file issues, start discussions, and begin contributing.
+Check out the [contributing](https://github.com/Kentico/content-management-sdk-net/blob/master/CONTRIBUTING.md) page to see the best places to file issues, start discussions, and begin contributing.
 
 
