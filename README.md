@@ -165,10 +165,9 @@ This way, you canimport your content in any order and run the same process repea
 ### Viewing a content item
 
 ```csharp
-// You can also specify the content item by its codename or external ID
-// var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
+var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
 // var identifier = ContentItemIdentifier.ByExternalId(EXTERNAL_ID);
-var identifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
+// var identifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
 
 var contentItemReponse = await _client.GetContentItemAsync(identifier);
 ```
@@ -176,12 +175,9 @@ var contentItemReponse = await _client.GetContentItemAsync(identifier);
 ### Deleting a content item
 
 ```csharp
-var itemToDelete = await PrepareItemToDelete();
-
-// You can also specify the content item by its codename or external ID
-// var identifier = ContentItemIdentifier.ByCodename(itemToDelete.CodeName);
+var identifier = ContentItemIdentifier.ByCodename(itemToDelete.CodeName);
 // var identifier = ContentItemIdentifier.ByExternalId(itemToDelete.ExternalId);
-var identifier = ContentItemIdentifier.ById(itemToDelete.Id);
+// var identifier = ContentItemIdentifier.ById(itemToDelete.Id);
 
 client.DeleteContentItemAsync(identifier);
 ```
@@ -189,11 +185,10 @@ client.DeleteContentItemAsync(identifier);
 ### Updating a content item
 
 ```csharp
-// You can also specify the content item by its codename
-// var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
-var identifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
-var newSitemapLocations = new List<ManageApiReference>();
+var identifier = ContentItemIdentifier.ByCodename(EXISTING_ITEM_CODENAME);
+// var identifier = ContentItemIdentifier.ById(EXISTING_ITEM_ID);
 
+var newSitemapLocations = new List<ManageApiReference>();
 var item = new ContentItemUpdateModel() { Name = "New name", SitemapLocations = newSitemapLocations };
 
 var contentItemReponse = await _client.UpdateContentItemAsync(identifier, item);
