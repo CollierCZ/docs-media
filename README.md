@@ -110,11 +110,10 @@ TO-DO: Example of importing other types of elements besides text (Assets, Modula
 
 ### Importing assets
 
-Importing assets using Content Management SDK is a 3-step process:
+Importing assets using Content Management SDK is a 2-step process:
 
 1. Upload a file to Kentico Cloud.
 2. Create a new asset using the given file reference.
-3. Link to the asset from a language variant of a content item. 
 
 #### 1. Upload a file 
 
@@ -144,33 +143,45 @@ var assetResult = await client.AddAssetAsync(asset);
 TO-DO: How to import asset descriptions
 TBD: Do we use the basic AddAsset method in the introductiom, or do we push external IDs right away?
 
-#### 3. Use the asset in a language variant 
-
-TO-DO
-
 ### Importing modular and linked content
 
-The content you are importing will often contain references to other pieces of imported content. A content item can referece assets or contain pointers other content items as modular content or links. To avoid having to import objects in a specific order (and solve problems with cyclical dependencies), you can use **external IDs** to reference non-existent (not-yet-imported) content. 
+The content you are importing will often contain references to other pieces of imported content. A content item can referece assets or point to other content items used as modular content or links. To avoid having to import objects in a specific order (and solve problems with cyclical dependencies), you can use **external IDs** to reference non-existent (not-yet-imported) content. 
 
 1. Define external IDs for all content you want to import in advance. 
 2. When referencing another piece of content, use its external ID. 
-3. Import your content (make sure to use upsert methods with external ID). All references will resolve at the end.
+3. Import your content (use upsert methods with external ID). All references will resolve at the end.
 
-This way, you canimport your content in any order and run the same process repeatedly to keep your project up to date. 
+This way, you can import your content in any order and run the same process repeatedly to keep your project up to date. 
 
 ```csharp
+// Upset an asset
 var asset = new AssetUpsertModel
 {
     FileReference = fileResult,
     Descriptions = new List<AssetDescriptionsModel>();
 };
 var externalId = "Ext-Asset-123-png";
-
 var assetResult = await _client.UpsertAssetByExternalIdAsync(externalId, asset);
 
+// Upsert a content item
+var sitemapLocations = new List<ManageApiReference>();
+var type = new ManageApiReference() { CodeName = "cafe" };
+var item = new ContentItemUpsertModel() { Name = "Brno", SitemapLocations = sitemapLocations, Type = type };
+var contentItemResponse = await _client.UpsertContentItemByExternalIdAsync("Ext-Item-456-Brno", item);
 
+//Upsert a language variant
+var contentItemVariantUpdateModel = new ContentItemVariantUpdateModel() { Elements = {
+    { "picture", new ManageApiReference() { externalID = "Ext-Asset-123-png" } },
+    { "city", "Brno" },
+    { "country", "Czech Republic" }
+} };
 
+var itemIdentifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
+var languageIdentifier = LanguageIdentifier.ByCodename("en-US");
+var identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
+var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVariantUpdateModel);
+```
 
 ### Content item methods
 
