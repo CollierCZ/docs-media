@@ -158,6 +158,18 @@ The content you are importing will often contain references to other pieces of i
 
 This way, you canimport your content in any order and run the same process repeatedly to keep your project up to date. 
 
+```csharp
+var asset = new AssetUpsertModel
+{
+    FileReference = fileResult,
+    Descriptions = new List<AssetDescriptionsModel>();
+};
+var externalId = "Ext-Asset-123-png";
+
+var assetResult = await _client.UpsertAssetByExternalIdAsync(externalId, asset);
+
+
+
 
 
 ### Content item methods
