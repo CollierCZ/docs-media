@@ -74,7 +74,7 @@ ContentItemCreateModel item = new ContentItemCreateModel() {
 };
 
 // Add your content item to your project in Kentico Cloud
-ContentItemModel responseItem = await client.CreateContentItemAsync(item);
+ContentItemModel response = await client.CreateContentItemAsync(item);
 ```
 
 Kentico Cloud will generate an internal ID and codename for the (new and empty) content item and include it in the response. In the next step, we will add the actual (localized) content.
@@ -103,7 +103,7 @@ var elements = new {
     url_pattern = "on-roasts",
     personas = new [] { TaxonomyTermIdentifier.ByCodename("barista") }
 };
-var contentItemVariantUpsertModel = new ContentItemVariantUpsertModel() { Elements = elements };
+ContentItemVariantUpsertModel upsertModel = new ContentItemVariantUpsertModel() { Elements = elements };
 
 // Specify the content item and the language varaint 
 ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ByCodename("on_roasts");
@@ -111,7 +111,7 @@ LanguageIdentifier languageIdentifier = LanguageIdentifier.ByLanguageCodename("e
 ContentItemVariantIdentifier identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
 // Upsert a language variant of your content item
-ContentItemVariantModel responseVariant = await client.UpsertContentItemVariantAsync(identifier, contentItemVariantUpsertModel);
+ContentItemVariantModel response = await client.UpsertContentItemVariantAsync(identifier, upsertModel);
 ```
 
 ### Importing assets
@@ -168,13 +168,13 @@ var elements = {
     city = "Brno",
     country = "Czech Republic"
 };
-var contentItemVariantUpsertModel = new ContentItemVariantUpsertModel() { Elements = elements };
+ContentItemVariantUpsertModel upsertModel = new ContentItemVariantUpsertModel() { Elements = elements };
 
 ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ByExternalId(itemExternalId);
 LanguageIdentifier languageIdentifier = LanguageIdentifier.ByCodename("en-US");
 ContentItemVariantIdentifier identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
-ContentItemVariantModel responseVariant = await client.UpsertContentItemVariantAsync(identifier, contentItemVariantUpsertModel);
+ContentItemVariantModel response = await client.UpsertContentItemVariantAsync(identifier, upsertModel);
 ```
 
 ### Content item methods
@@ -189,7 +189,7 @@ ContentItemUpsertModel item = new ContentItemUpsertModel() {
 };
 string itemExternalId = "Ext-Item-456-Brno";
 
-ContentItemModel contentItemResponse = await client.UpsertContentItemByExternalIdAsync(itemExternalId, item);
+ContentItemModel response = await client.UpsertContentItemByExternalIdAsync(itemExternalId, item);
 ```
 
 #### Adding a content item 
@@ -201,7 +201,7 @@ ContentItemCreateModel item = new ContentItemCreateModel() {
     SitemapLocations = new[] { SitemapNodeIdentifier.ByCodename("cafes") }
 };
 
-ContentItemModel responseItem = await client.CreateContentItemAsync(item);
+ContentItemModel response = await client.CreateContentItemAsync(item);
 ```
 
 #### Updating a content item
@@ -218,7 +218,7 @@ ContentItemUpdateModel item = new ContentItemUpdateModel() {
     }
 };
 
-ContentItemModel contentItemReponse = await client.UpdateContentItemAsync(identifier, item);
+ContentItemModel reponse = await client.UpdateContentItemAsync(identifier, item);
 ```
 
 #### Viewing a content item
@@ -228,7 +228,7 @@ ContentItemIdentifier identifier = ContentItemIdentifier.ByCodename("brno");
 // ContentItemIdentifier identifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
 // ContentItemIdentifier identifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 
-ContentItemModel contentItemReponse = await client.GetContentItemAsync(identifier);
+ContentItemModel reponse = await client.GetContentItemAsync(identifier);
 ```
 
 #### Listing content items
@@ -269,7 +269,7 @@ var elements = new {
     city = "Brno",
     country = "Czech Republic"
 };
-var contentItemVariantUpsertModel = new ContentItemVariantUpsertModel() { Elements = elements };
+ContentItemVariantUpsertModel upsertModel = new ContentItemVariantUpsertModel() { Elements = elements };
 ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ByCodename("brno");
 // ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 // ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
@@ -279,7 +279,7 @@ LanguageIdentifier languageIdentifier = LanguageIdentifier.ByCodename("en-US");
 
 ContentItemVariantIdentifier identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
-ContentItemVariantModel responseVariant = await client.UpsertContentItemVariantAsync(identifier, contentItemVariantUpsertModel);
+ContentItemVariantModel response = await client.UpsertContentItemVariantAsync(identifier, upsertModel);
 ```
 
 #### Viewing a language variant
@@ -304,7 +304,7 @@ ContentItemIdentifier identifier = ContentItemIdentifier.ByCodename("brno");
 // ContentItemIdentifier identifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 // ContentItemIdentifier identifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
 
-List<ContentItemVariantModel> responseVariants = await client.ListContentItemVariantsAsync(identifier);
+List<ContentItemVariantModel> response = await client.ListContentItemVariantsAsync(identifier);
 ```
 
 #### Deleting a language variant
