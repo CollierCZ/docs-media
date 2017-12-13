@@ -1,14 +1,12 @@
 # Kentico Cloud Content Management .NET SDK
 
-[![Build status](https://ci.appveyor.com/api/projects/status/3m3q2ads2y43bh9o/branch/master?svg=true)](https://ci.appveyor.com/project/kentico/content-management-sdk-net/branch/master)
-[![NuGet](https://img.shields.io/nuget/v/KenticoCloud.Delivery.svg)](https://www.nuget.org/packages/KenticoCloud.ContentManagement)
-[![NuGet](https://img.shields.io/nuget/dt/kenticocloud.delivery.svg)](https://www.nuget.org/packages/KenticoCloud.ContentManagement)
+[![Build status](https://ci.appveyor.com/api/projects/status/6b3tt1kc3ogmcav3/branch/master?svg=true)](https://ci.appveyor.com/project/kentico/content-management-sdk-net/branch/master)
 [![Forums](https://img.shields.io/badge/chat-on%20forums-orange.svg)](https://forums.kenticocloud.com)
 
 ## Summary
 
 The Kentico Cloud Content Management .NET SDK is a client library used for managing content in Kentico Cloud. It provides read/write access to your Kentico Cloud projects.  
-You can use the SDK in the form of a [NuGet package](https://www.nuget.org/packages/KenticoCloud.Delivery) to migrate your existing content into your Kentico Cloud project or update content in your content items. 
+You can use the SDK in the form of a [NuGet package](https://www.nuget.org/packages/KenticoCloud.Delivery) to migrate existing content into your Kentico Cloud project or update content in your content items. You can import content items, their language variants, and assets.
 
 The Content Management SDK does not provide any content filtering options and is not optimized for content delivery. If you need to deliver larger amounts of content we recommend using the [Delivery SDK](https://github.com/Kentico/delivery-sdk-net) instead.
 
@@ -18,18 +16,21 @@ You can head over to our Developer Hub for the complete [Content Management API 
 
 To manage content in a Kentico Cloud project via the Content Management API, you first need to activate the API for the project. See our documentation on how you can [activate the Content Management API](https://developer.kenticocloud.com/v1/docs/importing-to-kentico-cloud#section-enabling-the-api-for-your-project).
 
-You also need to have the structure of you Kentico Cloud project prepared ahead of time, before importing your content. This means defining at least the [content types](https://help.kenticocloud.com/define-content-structure/structure/creating-and-deleting-content-types) of the imported items, optionally also setting up your languages, taxonomy groups or sitemap locations. 
+You also need to prepare the structure of your Kentico Cloud project before importing your content. At minimum, that means defining the [Content types](https://help.kenticocloud.com/define-content-structure/structure/creating-and-deleting-content-types) of the items you want to impoort. You might also need to set up your [Languages](https://help.kenticocloud.com/multilingual-content#managing-languages), [Taxonomy](https://help.kenticocloud.com/categorize-content/working-with-taxonomy) or [Sitemap locations](https://help.kenticocloud.com/categorize-content/using-a-sitemap) (if you are using them). 
 
 ## Using the ContentManagementClient
 
-The `ContentManagementClient` class is the main class of the SDK. Using this class, you can import, update, view and delete content in your Kentico Cloud projects. 
+The `ContentManagementClient` class is the main class of the SDK. Using this class, you can import, update, view and delete content items, language variants, and assets in your Kentico Cloud projects. 
 
 To create an instance of the class, you need to provide a [project ID](https://developer.kenticocloud.com/docs/using-delivery-api#section-getting-project-id) and a valid [Content Management API Key](https://developer.kenticocloud.com/v1/docs/importing-to-kentico-cloud#importing-content-items).
 
 ```csharp
-var OPTIONS = new ContentManagementOptions() { ProjectId = "bb6882a0-3088-405c-a6ac-4a0da46810b0", ApiKey = "ew0...1eo" }; 
+var options = new ContentManagementOptions() { 
+    ProjectId = "bb6882a0-3088-405c-a6ac-4a0da46810b0",
+    ApiKey = "ew0...1eo" 
+}; 
 // Initialize an instance of the ContentManagementClient client
-var client = new ContentManagementClient(OPTIONS);
+var client = new ContentManagementClient(options);
 ```
 
 Once you create a `ContentManagementClient`, you can start managing content in your project by calling methods on the client instance. See [Importing content items](#importing-content-items) for details.
@@ -39,14 +40,14 @@ Once you create a `ContentManagementClient`, you can start managing content in y
 Most methods of the SDK accept an *Identifier* object that specifies which content item, language variant or asset you want to perform the given operation on. There are 3 types of identification you can use to create the identifier: 
 
 ```csharp
-var identifier = ContentItemIdentifier.ByCodename("brno");
+var identifier = ContentItemIdentifier.ByCodename("on_roasts");
 var identifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 var identifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
 ```
 
-* **Codenames** are generated automatically generated by Kentico Cloud based on the object's name. They can make your code more readable but are not guaranteed to be unique. They should only be used in circumstances with no chance of naming conflicts. 
-* (internal) **IDs** are random [GUIDs](https://en.wikipedia.org/wiki/Universally_unique_identifier) assignned to objects by Kentico Cloud at the moment of import/creation. They are unique, but only objects that are already in the system have them. 
-* **External IDs** are string-based custom identifiers defined by you. This is useful when importing a batch of cross-referencing content. See [Importing modular and linked content](#importing-modular-and-linked-content). 
+* **Codenames** are generated automatically by Kentico Cloud based on the object's name. They can make your code more readable but are not guaranteed to be unique. They should only be used in circumstances with no chance of naming conflicts. 
+* (internal) **IDs** are random [GUIDs](https://en.wikipedia.org/wiki/Universally_unique_identifier) assigned to objects by Kentico Cloud at the moment of import/creation. They are unique, but only objects that are already in the system have them. You can't use them to refer to content that hasn't yet been imported. 
+* **External IDs** are string-based custom identifiers defined by you. This is useful when importing a batch of cross-referencing content. See [Importing Modular and linked content](#importing-modular-and-linked-content). 
 
 ## Quick start
 
@@ -63,16 +64,17 @@ Each content item can consist of several localized variants. **The content itsel
 
 ```csharp
 // Create an instance of the Content Management client
-var client = new ContentManagementClient(OPTIONS);
+var client = new ContentManagementClient(options);
 
-// Define a content type of the imported item by its codename
-var contentType = new ManageApiReference() { CodeName = "cafe" };
 // Define the imported content item
-var item = new ContentItemCreateModel() { Name = "Brno", Type = contentType };
+var item = new ContentItemCreateModel() { 
+    Name = "On Roasts",
+    Type = ContentTypeIdentifier.ByCodename("article"),
+    SitemapLocations = new[] { SitemapNodeIdentifier.ByCodename("articles") }
+};
 
 // Add your content item to your project in Kentico Cloud
-var responseItem = await client.AddContentItemAsync(item);
-);
+var responseItem = await client.CreateContentItemAsync(item);
 ```
 
 Kentico Cloud will generate an internal ID and codename for the (new and empty) content item and include it in the response. In the next step, we will add the actual (localized) content.
@@ -87,127 +89,118 @@ To add localized content, you have to specify:
 * The content elements of the language variant you want to insert or update. Omitted elements will remain unchanged. 
 
 ```csharp
-var client = new ContentManagementClient(OPTIONS);
-
-private static Dictionary<string, object> ELEMENTS = new Dictionary<string, object> {
-    { "street", "Nove Sady 25" },
-    { "city", "Brno" },
-    { "country", "Czech Republic" },
-    { "state", "Jihomoravsky kraj" },
-    { "zip_code", "60200" },
-    { "phone", "+420 444 444 444" },
-    { "email", "brnocafe@kentico.com" }
+var elements = new {
+    title = "On Roasts",
+    post_date = new DateTime(2017, 7, 4),
+    body_copy = @"
+        <h1>Light Roasts</h1>
+        <p>Usually roasted for 6 - 8 minutes or simply until achieving a light brown color. This method
+        is used for milder coffee  varieties and for coffee tasting. This type of roasting allows the natural
+        characteristics of each coffee to show. The aroma of coffees produced from light roasts is usually
+        more intense.The cup itself is more acidic and the concentration of caffeine is higher.</p>
+    ",
+    related_articles = new [] { ContentItemIdentifier.ByCodename("which_brewing_fits_you_") },
+    url_pattern = "on-roasts",
+    personas = new [] { TaxonomyTermIdentifier.ByCodename("barista") }
 };
-var contentItemVariantUpdateModel = new ContentItemVariantUpdateModel() { Elements = ELEMENTS };
+var contentItemVariantUpsertModel = new ContentItemVariantUpsertModel() { Elements = elements };
 
 // Specify the content item and the language varaint 
-var itemIdentifier = ContentItemIdentifier.ByCodename("brno");
+var itemIdentifier = ContentItemIdentifier.ByCodename("on_roasts");
 var languageIdentifier = LanguageIdentifier.ByLanguageCodename("en-US");
 var identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
 // Upsert a language variant of your content item
-var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVariantUpdateModel);
-);
+var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVariantUpsertModel);
 ```
-
-TO-DO: Example of importing other types of elements besides text (Assets, Modular content, Taxonomy, Numbers...)
 
 ### Importing assets
 
-Importing assets using Content Management SDK is a 2-step process:
+Importing assets using Content Management API is usually a 2-step process:
 
-1. Upload a file to Kentico Cloud.
-2. Create a new asset using the given file reference.
+1. Uploading a file to Kentico Cloud.
+2. Creating a new asset using the given file reference.
 
-#### 1. Upload a file 
+This SDK, however, simplifies the process and allows you to uplaod assets using a single method: 
 
-```csharp
-var client = new ContentManagementClient(OPTIONS);
-
-var stream = new MemoryStream(Encoding.UTF8.GetBytes("Hello world from CM API .NET SDK"));
-var fileName = "Hello.txt";
-var contentType = "text/plain";
-
-var fileResult = await client.UploadFileAsync(stream, fileName, contentType);
-```
-Kentico Cloud will generate an internal id that serves as a pointer to your file. You will use it in the next step to create the actual asset. 
-
-#### 2. Create an asset 
-```csharp
-var asset = new AssetUpsertModel
-    {
-        FileReference = fileResult,
-        Descriptions = new List<AssetDescriptionsModel>()
-    };
-var externalId = "Hello";
-
-var assetResult = await client.AddAssetAsync(asset);
-```
-
-TO-DO: How to import asset descriptions
-TBD: Do we use the basic AddAsset method in the introduction, or do we push external IDs right away?
-
-### Importing modular and linked content
-
-The content you are importing will often contain references to other pieces of imported content. A content item can reference assets or point to other content items used as modular content or links. To avoid having to import objects in a specific order (and solve problems with cyclical dependencies), you can use **external IDs** to reference non-existent (not-yet-imported) content. 
-
-1. Define external IDs for all content you want to import in advance. 
-2. When referencing another piece of content, use its external ID. 
-3. Import your content (use upsert methods with external ID). All references will resolve at the end.
-
-This way, you can import your content in any order and run the same process repeatedly to keep your project up to date. 
-
-```csharp
-// Upset an asset
-var asset = new AssetUpsertModel
-{
-    FileReference = fileResult,
-    Descriptions = new List<AssetDescriptionsModel>();
+```csharp 
+var assetDescription = new AssetDescription { 
+    Description = "Description of the asset in English Language",
+    Language = LanguageIdentifier.ByCodename("en-US") 
 };
-var externalId = "Ext-Asset-123-png";
-var assetResult = await _client.UpsertAssetByExternalIdAsync(externalId, asset);
+var descriptions = new [] { assetDescription };
+
+var filePath = "‪C:\Users\Kentico\Desktop\puppies.png";
+var contentType = "image/png";
+
+var assetResult = await client.CreateAssetAsync(new FileContentSource(filePath, contentType), descriptions);
+```
+
+### Importing Modular and linked content
+
+The content you are importing will often contain references to other pieces of imported content. A content item can reference assets or point to other content items using modular content elements or links. To avoid having to import objects in a specific order (and solve problems with cyclical dependencies), you can use **external IDs** to reference non-existent (not-yet-imported) content: 
+
+1. Define external IDs for all content items and assets you want to import in advance. 
+2. When referencing another content item ar asset, use its external ID. 
+3. Import your content (use upsert methods with external ID). All references will resolve in the end.
+
+This way, you can import your content in any order and run the import process repeatedly to keep your project up to date. In the example below we import an asset and a content item that uses it: 
+
+```csharp
+// Upsert an asset, assuming you already have the fileResult reference to the uplaoded file
+var asset = new AssetUpsertModel {
+    FileReference = fileResult
+};
+var assetExternalId = "Ext-Asset-123-png";
+var assetResult = await client.UpsertAssetByExternalIdAsync(assetExternalId, asset);
 
 // Upsert a content item
-var sitemapLocations = new List<ManageApiReference>();
-var type = new ManageApiReference() { CodeName = "cafe" };
-var item = new ContentItemUpsertModel() { Name = "Brno", SitemapLocations = sitemapLocations, Type = type };
-var contentItemResponse = await _client.UpsertContentItemByExternalIdAsync("Ext-Item-456-Brno", item);
+var item = new ContentItemUpsertModel() { 
+    Name = "Brno", 
+    Type = ContentTypeIdentifier.ByCodename("cafe")
+};
+var itemExternalId = "Ext-Item-456-Brno";
+var contentItemResponse = await client.UpsertContentItemByExternalIdAsync(itemExternalId, item);
 
-//Upsert a language variant
-var contentItemVariantUpdateModel = new ContentItemVariantUpdateModel() { Elements = {
-    { "picture", new ManageApiReference() { externalID = "Ext-Asset-123-png" } },
-    { "city", "Brno" },
-    { "country", "Czech Republic" }
+// Upsert a language variant which references the asset using external ID
+var contentItemVariantUpsertModel = new ContentItemVariantUpsertModel() { Elements = {
+    picture = AssetIdentifier.ByExternalId(assetExternalId),
+    city = "Brno",
+    country = "Czech Republic"
 } };
 
-var itemIdentifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
+var itemIdentifier = ContentItemIdentifier.ByExternalId(itemExternalId);
 var languageIdentifier = LanguageIdentifier.ByCodename("en-US");
 var identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
-var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVariantUpdateModel);
+var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVariantUpsertModel);
 ```
-TO-DO: Does this work this way? Can I use ManageAPI Reference this way?
 
 ### Content item methods
 
-#### Viewing a content item
+#### Upserting a content item by external ID
 
 ```csharp
-var identifier = ContentItemIdentifier.ByCodename("brno");
-// var identifier = ContentItemIdentifier.ByExternalId(EXTERNAL_ID);
-// var identifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
+var item = new ContentItemUpsertModel() { 
+    Name = "New or updated name",
+    Type = ContentTypeIdentifier.ByCodename("cafe"),
+    SitemapLocations = new[] { SitemapNodeIdentifier.ByCodename("cafes") }   
+};
+var itemExternalId = "Ext-Item-456-Brno";
 
-var contentItemReponse = await _client.GetContentItemAsync(identifier);
+var contentItemResponse = await client.UpsertContentItemByExternalIdAsync(itemExternalId, item);
 ```
 
-#### Deleting a content item
+#### Adding a content item 
 
 ```csharp
-var identifier = ContentItemIdentifier.ByCodename("brno");
-// var identifier = ContentItemIdentifier.ByExternalId(itemToDelete.ExternalId);
-// var identifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
+var item = new ContentItemCreateModel() { 
+    Name = "Brno",
+    Type = ContentTypeIdentifier.ByCodename("cafe"),
+    SitemapLocations = new[] { SitemapNodeIdentifier.ByCodename("cafes") }
+};
 
-client.DeleteContentItemAsync(identifier);
+var responseItem = await client.CreateContentItemAsync(item);
 ```
 
 #### Updating a content item
@@ -216,30 +209,29 @@ client.DeleteContentItemAsync(identifier);
 var identifier = ContentItemIdentifier.ByCodename("brno");
 // var identifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 
-var newSitemapLocations = new List<ManageApiReference>();
-var item = new ContentItemUpdateModel() { Name = "New name", SitemapLocations = newSitemapLocations };
+var item = new ContentItemUpdateModel() { 
+    Name = "New name",
+    SitemapLocations = new[] { 
+        SitemapNodeIdentifier.ByCodename("cafes"),
+        SitemapNodeIdentifier.ByCodename("europe")
+    }
+};
 
-var contentItemReponse = await _client.UpdateContentItemAsync(identifier, item);
+var contentItemReponse = await client.UpdateContentItemAsync(identifier, item);
 ```
 
-#### Upserting a content item by external ID
+#### Viewing a content item
 
 ```csharp
-var sitemapLocations = new List<ManageApiReference>();
-var type = new ManageApiReference() { CodeName = "cafe" };
-var item = new ContentItemUpsertModel() { Name = "New or updated name", SitemapLocations = sitemapLocations, Type = type };
+var identifier = ContentItemIdentifier.ByCodename("brno");
+// var identifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
+// var identifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 
-var contentItemResponse = await _client.UpsertContentItemByExternalIdAsync("Ext-Item-456-Brno", item);
+var contentItemReponse = await client.GetContentItemAsync(identifier);
 ```
 
 #### Listing content items
 
-All at once:
-```csharp
- var response = await client.ListContentItemsAsync();
- ```
-
-With continuation:
 ```csharp
 var response = await client.ListContentItemsAsync();
 while (true)
@@ -248,7 +240,6 @@ while (true)
     {
         // use your content item
     }
-
     if (!response.HasNextPage())
     {
         break;
@@ -256,30 +247,38 @@ while (true)
     response = await response.GetNextPage();
 }
  ```
+
+#### Deleting a content item
+
+```csharp
+var identifier = ContentItemIdentifier.ByCodename("brno");
+// var identifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
+// var identifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
+
+client.DeleteContentItemAsync(identifier);
+```
  
 ### Language variant methods
 
-#### Upserting language variants
+#### Upserting a language variant
 
 ```csharp
- var contentItemVariantUpdateModel = new ContentItemVariantUpdateModel() { Elements = {
-    { "street", "Nove Sady 25" },
-    { "city", "Brno" },
-    { "country", "Czech Republic" }
-} };
-
+var elements = new {
+    street = "Nove Sady 25",
+    city = "Brno",
+    country = "Czech Republic"
+};
+var contentItemVariantUpsertModel = new ContentItemVariantUpsertModel() { Elements = elements };
 var itemIdentifier = ContentItemIdentifier.ByCodename("brno");
 // var itemIdentifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 // var itemIdentifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
-
 
 var languageIdentifier = LanguageIdentifier.ByCodename("en-US");
 // var languageIdentifier = LanguageIdentifier.ById("00000000-0000-0000-0000-000000000000");
 
 var identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
-var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVariantUpdateModel);
-
+var responseVariant = await client.UpsertVariantAsync(identifier, contentItemVariantUpsertModel);
 ```
 
 #### Viewing a language variant
@@ -289,34 +288,30 @@ var itemIdentifier = ContentItemIdentifier.ByCodename("brno");
 // var itemIdentifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 // var itemIdentifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
 
-
 var languageIdentifier = LanguageIdentifier.ByCodename("en-US");
 // var languageIdentifier = LanguageIdentifier.ById("00000000-0000-0000-0000-000000000000");
 
 var identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
-var response = await _client.GetContentItemVariantAsync(identifier);
+var response = await client.GetContentItemVariantAsync(identifier);
 ```
 
 #### Listing language variants
 
 ```csharp
-
 var identifier = ContentItemIdentifier.ByCodename("brno");
 // var identifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 // var identifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
 
-var responseVariants = await _client.ListContentItemVariantsAsync(identifier);
+var responseVariants = await client.ListContentItemVariantsAsync(identifier);
 ```
 
-#### Deleting language variants
+#### Deleting a language variant
 
 ```csharp
-
 var itemIdentifier = ContentItemIdentifier.ByCodename("brno");
 // var itemIdentifier = ContentItemIdentifier.ById("8ceeb2d8-9676-48ae-887d-47ccb0f54a79");
 // var itemIdentifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
-
 
 var languageIdentifier = LanguageIdentifier.ByCodename("en-US");
 // var languageIdentifier = LanguageIdentifier.ById("00000000-0000-0000-0000-000000000000");
@@ -327,19 +322,61 @@ await client.DeleteContentItemVariantAsync(identifier);
 
 ### Asset methods
 
-#### Listing assets
+#### Uploading a file 
 
-All at once:
-
-```csharp 
-var response = await client.ListAssetsAsync();
-```
-
-With continuation:
+Uplaods a file to Kentico Cloud. Returns a `fileResult` reference that can later be used to create or update an asset. 
 
 ```csharp
+var client = new ContentManagementClient(options);
 
-var response = await _client.ListAssetsAsync();
+var stream = new MemoryStream(Encoding.UTF8.GetBytes("Hello world from CM API .NET SDK"));
+var fileName = "Hello.txt";
+var contentType = "text/plain";
+
+var fileResult = await client.UploadFileAsync(new FileContentSource(stream, fileName, contentType));
+```
+
+#### Upserting an asset using external ID
+
+Updates or creates an asset using a `fileResult` reference to previously uploaded file. You can specify an asset description for each language in your Kentico Cloud project.  
+
+```csharp
+var assetDescription = new AssetDescription { 
+    Description = "Description of the asset in English Language", 
+    Language = LanguageIdentifier.ByCodename("en-US")
+};
+var descriptions = new [] { assetDescription };
+
+var asset = new AssetUpsertModel {
+    FileReference = fileResult,
+    Descriptions = descriptions;
+};
+var externalId = "Ext-Asset-123-png";
+
+var assetResult = await client.UpsertAssetByExternalIdAsync(externalId, asset);
+```
+
+#### Uploading an asset from a file system in a single step
+
+Import the asset file and its descriptions using a single method. 
+
+```csharp 
+var assetDescription = new AssetDescription { 
+    Description = "Description of the asset in English Language", 
+    Language = LanguageIdentifier.ByCodename("en-US")
+};
+var descriptions = new [] { assetDescription };
+
+var filePath = "‪C:\Users\Kentico\Desktop\puppies.png";
+var contentType = "image/png";
+
+var assetResult = await client.CreateAssetAsync(new FileContentSource(filePath, contentType), descriptions);
+```
+
+#### Listing assets
+
+```csharp
+var response = await client.ListAssetsAsync();
 
 while (true)
 {
@@ -347,7 +384,6 @@ while (true)
     {
         // Use your asset
     }
-
     if (!response.HasNextPage())
     {
         break;
@@ -356,46 +392,13 @@ while (true)
 }
 ```
 
-##### Uploading a file 
-
-```csharp
-var client = new ContentManagementClient(OPTIONS);
-
-var stream = new MemoryStream(Encoding.UTF8.GetBytes("Hello world from CM API .NET SDK"));
-var fileName = "Hello.txt";
-var contentType = "text/plain";
-
-var fileResult = await client.UploadFileAsync(stream, fileName, contentType);
-```
-
-#### Upserting an asset using external ID 
-```csharp
-var asset = new AssetUpsertModel
-{
-    FileReference = fileResult,
-    Descriptions = new List<AssetDescriptionsModel>();
-};
-var externalId = "Ext-Asset-123-png";
-
-var assetResult = await _client.UpsertAssetByExternalIdAsync(externalId, asset);
-```
-
-#### Uploading asset from a file system in a single step (?)
-
-```csharp 
-var descriptions = new List<AssetDescriptionsModel>();
-
-var filePath = "‪C:\Users\Kentico\Desktop\puppies.png";
-var contentType = "image/png";
-
-var assetResult = await _client.CreateAssetAsync(new FileContentSource(filePath, contentType), descriptions);
-```
-
 #### Deleting an asset
 
 ```csharp
-client.DeleteAssetAsync(AssetIdentifier.ById("fcbb12e6-66a3-4672-85d9-d502d16b8d9c"));
-// client.DeleteAssetAsync(AssetIdentifier.ByExternalId("Ext-Asset-123-png"));
+var identifier = AssetIdentifier.ByExternalId("Ext-Asset-123-png");
+// var identifier = AssetIdentifier.ById("fcbb12e6-66a3-4672-85d9-d502d16b8d9c");
+
+client.DeleteAssetAsync(identifier);
 ```
 
 ## Further information
@@ -416,5 +419,3 @@ Optional:
 ## Feedback & Contributing
 
 Check out the [contributing](https://github.com/Kentico/content-management-sdk-net/blob/master/CONTRIBUTING.md) page to see the best places to file issues, start discussions, and begin contributing.
-
-
