@@ -133,7 +133,7 @@ AssetDescription[] descriptions = new [] { assetDescription };
 string filePath = "‪C:\Users\Kentico\Desktop\puppies.png";
 string contentType = "image/png";
 
-AssetModel assetResult = await client.CreateAssetAsync(new FileContentSource(filePath, contentType), descriptions);
+AssetModel response = await client.CreateAssetAsync(new FileContentSource(filePath, contentType), descriptions);
 ```
 
 ### Importing Modular and linked content
@@ -152,7 +152,7 @@ AssetUpsertModel asset = new AssetUpsertModel {
     FileReference = fileResult
 };
 string assetExternalId = "Ext-Asset-123-png";
-AssetModel assetResult = await client.UpsertAssetByExternalIdAsync(assetExternalId, asset);
+AssetModel response = await client.UpsertAssetByExternalIdAsync(assetExternalId, asset);
 
 // Upsert a content item
 ContentItemUpsertModel item = new ContentItemUpsertModel() { 
@@ -352,7 +352,7 @@ AssetUpsertModel asset = new AssetUpsertModel {
 };
 string externalId = "Ext-Asset-123-png";
 
-AssetModel assetResult = await client.UpsertAssetByExternalIdAsync(externalId, asset);
+AssetModel response = await client.UpsertAssetByExternalIdAsync(externalId, asset);
 ```
 
 #### Uploading an asset from a file system in a single step
@@ -369,7 +369,7 @@ AssetDescription[] descriptions = new [] { assetDescription };
 string filePath = "‪C:\Users\Kentico\Desktop\puppies.png";
 string contentType = "image/png";
 
-AssetModel assetResult = await client.CreateAssetAsync(new FileContentSource(filePath, contentType), descriptions);
+AssetModel response = await client.CreateAssetAsync(new FileContentSource(filePath, contentType), descriptions);
 ```
 
 #### Listing assets
