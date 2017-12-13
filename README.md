@@ -152,7 +152,7 @@ AssetUpsertModel asset = new AssetUpsertModel {
     FileReference = fileResult
 };
 string assetExternalId = "Ext-Asset-123-png";
-AssetModel response = await client.UpsertAssetByExternalIdAsync(assetExternalId, asset);
+AssetModel assetResponse = await client.UpsertAssetByExternalIdAsync(assetExternalId, asset);
 
 // Upsert a content item
 ContentItemUpsertModel item = new ContentItemUpsertModel() { 
@@ -160,7 +160,7 @@ ContentItemUpsertModel item = new ContentItemUpsertModel() {
     Type = ContentTypeIdentifier.ByCodename("cafe")
 };
 string itemExternalId = "Ext-Item-456-Brno";
-ContentItemModel contentItemResponse = await client.UpsertContentItemByExternalIdAsync(itemExternalId, item);
+ContentItemModel itemResponse = await client.UpsertContentItemByExternalIdAsync(itemExternalId, item);
 
 // Upsert a language variant which references the asset using external ID
 var elements = {
@@ -174,7 +174,7 @@ ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ByExternalId(itemEx
 LanguageIdentifier languageIdentifier = LanguageIdentifier.ByCodename("en-US");
 ContentItemVariantIdentifier identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
-ContentItemVariantModel response = await client.UpsertContentItemVariantAsync(identifier, upsertModel);
+ContentItemVariantModel variantResponse = await client.UpsertContentItemVariantAsync(identifier, upsertModel);
 ```
 
 ### Content item methods
