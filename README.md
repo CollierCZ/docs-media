@@ -60,15 +60,31 @@ The `ContentManagementClient` also supports working with strongly-typed models. 
 
 ```csharp
  // Elements to update
-CafeeModel stronglyTypedElements = new CafeModel
+ArticleModel stronglyTypedElements = new ArticleModel
 {
     Title = "On Roasts",
-    PostDate = new DateTime(2017, 7, 4),
+    PostDate = new DateTime(2017, 7, 4)
 };
 
 // Upsert a language variant of a content item
-ContentItemVariantModel<CafeModel> response = await client.UpsertContentItemVariantAsync<CafeModel>(identifier, stronglyTypedElements);
+ContentItemVariantModel<ArticleModel> response = await client.UpsertContentItemVariantAsync<ArticleModel>(identifier, stronglyTypedElements);
 ```
+
+You can also use anonymous objects to achieve the same result:
+
+```csharp
+ // Elements to update
+var elements = new
+{
+    title = "On Roasts",
+    post_date = new DateTime(2017, 7, 4)
+};
+ContentItemVariantUpsertModel upsertModel = new ContentItemVariantUpsertModel() { Elements = elements };
+
+// Upsert a language variant of a content item
+ContentItemVariantModel<CafeModel> response = await client.UpsertContentItemVariantAsync<CafeModel>(identifier, upsertModel);
+```
+However, we encourage you to use strongly-typed models for their convenience and type safety. Examples in this document use strongly-typed models where possible.
 
 ## Quick start
 
@@ -111,23 +127,21 @@ To add localized content, you have to specify:
 
 ```csharp
 // Defines the content elements to update
-var elements = new
+ArticleModel stronglyTypedElements = new ArticleModel
 {
-    title = "On Roasts",
-    post_date = new DateTime(2017, 7, 4),
-    body_copy = @"
+    Title = "On Roasts",
+    PostDate = new DateTime(2017, 7, 4),
+    BodyCopy = @"
         <h1>Light Roasts</h1>
         <p>Usually roasted for 6 - 8 minutes or simply until achieving a light brown color. This method
         is used for milder coffee  varieties and for coffee tasting. This type of roasting allows the natural
         characteristics of each coffee to show. The aroma of coffees produced from light roasts is usually
         more intense.The cup itself is more acidic and the concentration of caffeine is higher.</p>
     ",
-    related_articles = new [] { ContentItemIdentifier.ByCodename("which_brewing_fits_you_") },
-    url_pattern = "on-roasts",
-    personas = new [] { TaxonomyTermIdentifier.ByCodename("barista") }
+    RelatedArticles = new [] { ContentItemIdentifier.ByCodename("which_brewing_fits_you_") },
+    UrlPattern = "on-roasts",
+    Personas = new [] { TaxonomyTermIdentifier.ByCodename("barista") }    
 };
-
-ContentItemVariantUpsertModel upsertModel = new ContentItemVariantUpsertModel() { Elements = elements };
 
 // Specifies the content item and the language varaint
 ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ByCodename("on_roasts");
@@ -135,7 +149,7 @@ LanguageIdentifier languageIdentifier = LanguageIdentifier.ByLanguageCodename("e
 ContentItemVariantIdentifier identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
 // Upserts a language variant of your content item
-ContentItemVariantModel response = await client.UpsertContentItemVariantAsync(identifier, upsertModel);
+ContentItemVariantModel<ArticleModel> response = await client.UpsertContentItemVariantAsync<ArticleModel>(identifier, stronglyTypedElements);
 ```
 
 ### Importing assets
@@ -195,19 +209,18 @@ string itemExternalId = "Ext-Item-456-Brno";
 ContentItemModel itemResponse = await client.UpsertContentItemByExternalIdAsync(itemExternalId, item);
 
 // Upsert a language variant which references the asset using external ID
-var elements =
+CafeModel stronglyTypedElements = new CafeModel
 {
-    picture = AssetIdentifier.ByExternalId(assetExternalId),
-    city = "Brno",
-    country = "Czech Republic"
+    Picture = AssetIdentifier.ByExternalId(assetExternalId),
+    City = "Brno",
+    Country = "Czech Republic"
 };
-ContentItemVariantUpsertModel upsertModel = new ContentItemVariantUpsertModel { Elements = elements };
 
 ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ByExternalId(itemExternalId);
 LanguageIdentifier languageIdentifier = LanguageIdentifier.ByCodename("en-US");
 ContentItemVariantIdentifier identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
-ContentItemVariantModel variantResponse = await client.UpsertContentItemVariantAsync(identifier, upsertModel);
+ContentItemVariantModel<CafeModel> variantResponse = await client.UpsertContentItemVariantAsync<CafeModel>(identifier, stronglyTypedElements);
 ```
 
 ### Content item methods
@@ -304,14 +317,13 @@ client.DeleteContentItemAsync(identifier);
 #### Upserting a language variant
 
 ```csharp
-var elements = new
+CafeModel stronglyTypedElements = new CafeModel
 {
-    street = "Nove Sady 25",
-    city = "Brno",
-    country = "Czech Republic"
+    Street = "Nove Sady 25",
+    City = "Brno",
+    Country = "Czech Republic"
 };
 
-ContentItemVariantUpsertModel upsertModel = new ContentItemVariantUpsertModel { Elements = elements };
 ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ByCodename("brno");
 // ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ById(Guid.Parse("8ceeb2d8-9676-48ae-887d-47ccb0f54a79"));
 // ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
@@ -320,7 +332,7 @@ LanguageIdentifier languageIdentifier = LanguageIdentifier.ByCodename("en-US");
 // LanguageIdentifier languageIdentifier = LanguageIdentifier.ById(Guid.Parse("00000000-0000-0000-0000-000000000000"));
 
 ContentItemVariantIdentifier identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
-ContentItemVariantModel response = await client.UpsertContentItemVariantAsync(identifier, upsertModel);
+ContentItemVariantModel<CafeModel> response = await client.UpsertContentItemVariantAsync<CafeModel>(identifier, stronglyTypedElements);
 ```
 
 #### Viewing a language variant
@@ -335,7 +347,7 @@ LanguageIdentifier languageIdentifier = LanguageIdentifier.ByCodename("en-US");
 
 ContentItemVariantIdentifier identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
 
-ContentItemVariantModel response = await client.GetContentItemVariantAsync(identifier);
+ContentItemVariantModel<CafeModel> response = await client.GetContentItemVariantAsync<CafeModel>(identifier);
 ```
 
 #### Listing language variants
@@ -345,7 +357,7 @@ ContentItemIdentifier identifier = ContentItemIdentifier.ByCodename("brno");
 // ContentItemIdentifier identifier = ContentItemIdentifier.ById(Guid.Parse("8ceeb2d8-9676-48ae-887d-47ccb0f54a79"));
 // ContentItemIdentifier identifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
 
-IEnumerable<ContentItemVariantModel> response = await client.ListContentItemVariantsAsync(identifier);
+IEnumerable<ContentItemVariantModel<CafeModel>> response = await client.ListContentItemVariantsAsync<CafeModel>(identifier);
 ```
 
 #### Deleting a language variant
