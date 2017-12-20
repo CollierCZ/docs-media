@@ -143,7 +143,7 @@ ArticleModel stronglyTypedElements = new ArticleModel
     Personas = new [] { TaxonomyTermIdentifier.ByCodename("barista") }    
 };
 
-// Specifies the content item and the language varaint
+// Specifies the content item and the language variant
 ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ByCodename("on_roasts");
 LanguageIdentifier languageIdentifier = LanguageIdentifier.ByLanguageCodename("en-US");
 ContentItemVariantIdentifier identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
