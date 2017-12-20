@@ -443,7 +443,7 @@ AssetModel response = await client.GetAssetAsync(identifier);
 ```csharp
 ListingResponseModel<AssetModel> response = await client.ListAssetsAsync();
 
-while
+while (true)
 {
     foreach (var asset in response)
     {
