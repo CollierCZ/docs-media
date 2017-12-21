@@ -174,7 +174,7 @@ IEnumerable<AssetDescription> descriptions = new [] { assetDescription };
 string filePath = "‪C:\Users\Kentico\Desktop\puppies.png";
 string contentType = "image/png";
 
-// Uploads the file and links it with a new asset
+// Uploads the file and links it to a new asset
 AssetModel response = await client.CreateAssetAsync(new FileContentSource(filePath, contentType), descriptions);
 ```
 
