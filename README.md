@@ -253,7 +253,7 @@ ContentItemCreateModel item = new ContentItemCreateModel
     SitemapLocations = new[] { SitemapNodeIdentifier.ByCodename("cafes") }
 };
 
-// Creates the content item
+// Creates a content item
 ContentItemModel response = await client.CreateContentItemAsync(item);
 ```
 
@@ -263,7 +263,7 @@ ContentItemModel response = await client.CreateContentItemAsync(item);
 ContentItemIdentifier identifier = ContentItemIdentifier.ByCodename("brno");
 // ContentItemIdentifier identifier = ContentItemIdentifier.ById(Guid.Parse("8ceeb2d8-9676-48ae-887d-47ccb0f54a79"));
 
-// Defines new values of the item's updated properties
+// Defines new properties of a content item
 ContentItemUpdateModel item = new ContentItemUpdateModel
 {
     Name = "New name",
@@ -273,7 +273,7 @@ ContentItemUpdateModel item = new ContentItemUpdateModel
     }
 };
 
-// Updates the content item
+// Updates a content item
 ContentItemModel reponse = await client.UpdateContentItemAsync(identifier, item);
 ```
 
@@ -417,6 +417,7 @@ AssetDescription assetDescription = new AssetDescription
 };
 IEnumerable<AssetDescription> descriptions = new [] { assetDescription };
 
+// Defines the asset to upsert
 AssetUpsertModel asset = new AssetUpsertModel
 {
     FileReference = fileResult,
