@@ -34,7 +34,7 @@ ContentManagementOptions options = new ContentManagementOptions
     ApiKey = "ew0...1eo"
 };
 
-// Initialize an instance of the ContentManagementClient client
+// Initializes an instance of the ContentManagementClient client
 ContentManagementClient client = new ContentManagementClient(options);
 ```
 
@@ -59,21 +59,21 @@ ContentItemIdentifier identifier = ContentItemIdentifier.ByExternalId("Ext-Item-
 The `ContentManagementClient` also supports working with strongly-typed models. You can generate strongly-typed models from your content types using the Kentico Cloud [model generator utility](https://github.com/Kentico/cloud-generators-net).
 
 ```csharp
- // Elements to update
+// Elements to update
 ArticleModel stronglyTypedElements = new ArticleModel
 {
     Title = "On Roasts",
     PostDate = new DateTime(2017, 7, 4)
 };
 
-// Upsert a language variant of a content item
+// Upserts a language variant of a content item
 ContentItemVariantModel<ArticleModel> response = await client.UpsertContentItemVariantAsync<ArticleModel>(identifier, stronglyTypedElements);
 ```
 
 You can also use anonymous objects to achieve the same result:
 
 ```csharp
- // Elements to update
+// Elements to update
 var elements = new
 {
     title = "On Roasts",
@@ -81,7 +81,7 @@ var elements = new
 };
 ContentItemVariantUpsertModel upsertModel = new ContentItemVariantUpsertModel() { Elements = elements };
 
-// Upsert a language variant of a content item
+// Upserts a language variant of a content item
 ContentItemVariantModel<CafeModel> response = await client.UpsertContentItemVariantAsync<CafeModel>(identifier, upsertModel);
 ```
 However, we encourage you to use strongly-typed models for their convenience and type safety. Examples in this document use strongly-typed models where possible.
