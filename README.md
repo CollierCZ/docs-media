@@ -228,6 +228,7 @@ ContentItemVariantModel<CafeModel> variantResponse = await client.UpsertContentI
 #### Upserting a content item by external ID
 
 ```csharp
+// Defines a content item to upsert
 ContentItemUpsertModel item = new ContentItemUpsertModel
 {
     Name = "New or updated name",
@@ -237,12 +238,14 @@ ContentItemUpsertModel item = new ContentItemUpsertModel
 
 string itemExternalId = "Ext-Item-456-Brno";
 
+// Upserts a content item by external ID
 ContentItemModel response = await client.UpsertContentItemByExternalIdAsync(itemExternalId, item);
 ```
 
 #### Adding a content item
 
 ```csharp
+// Defines a content item to add
 ContentItemCreateModel item = new ContentItemCreateModel
 {
     Name = "Brno",
@@ -250,6 +253,7 @@ ContentItemCreateModel item = new ContentItemCreateModel
     SitemapLocations = new[] { SitemapNodeIdentifier.ByCodename("cafes") }
 };
 
+// Creates the content item
 ContentItemModel response = await client.CreateContentItemAsync(item);
 ```
 
@@ -259,6 +263,7 @@ ContentItemModel response = await client.CreateContentItemAsync(item);
 ContentItemIdentifier identifier = ContentItemIdentifier.ByCodename("brno");
 // ContentItemIdentifier identifier = ContentItemIdentifier.ById(Guid.Parse("8ceeb2d8-9676-48ae-887d-47ccb0f54a79"));
 
+// Defines new values of the item's updated properties
 ContentItemUpdateModel item = new ContentItemUpdateModel
 {
     Name = "New name",
@@ -268,6 +273,7 @@ ContentItemUpdateModel item = new ContentItemUpdateModel
     }
 };
 
+// Updates the content item
 ContentItemModel reponse = await client.UpdateContentItemAsync(identifier, item);
 ```
 
@@ -278,12 +284,14 @@ ContentItemIdentifier identifier = ContentItemIdentifier.ByCodename("brno");
 // ContentItemIdentifier identifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
 // ContentItemIdentifier identifier = ContentItemIdentifier.ById(Guid.Parse("8ceeb2d8-9676-48ae-887d-47ccb0f54a79"));
 
+// Retrieves a content item
 ContentItemModel reponse = await client.GetContentItemAsync(identifier);
 ```
 
 #### Listing content items
 
 ```csharp
+// Retrieves a list of content items
 ListingResponseModel<ContentItemModel> response = await client.ListContentItemsAsync();
 
 while (true)
@@ -309,6 +317,7 @@ ContentItemIdentifier identifier = ContentItemIdentifier.ByCodename("brno");
 // ContentItemIdentifier identifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
 // ContentItemIdentifier identifier = ContentItemIdentifier.ById(Guid.Parse("8ceeb2d8-9676-48ae-887d-47ccb0f54a79"));
 
+// Deletes a content item
 client.DeleteContentItemAsync(identifier);
 ```
 
@@ -317,6 +326,7 @@ client.DeleteContentItemAsync(identifier);
 #### Upserting a language variant
 
 ```csharp
+// Defines the elements to update
 CafeModel stronglyTypedElements = new CafeModel
 {
     Street = "Nove Sady 25",
@@ -331,7 +341,9 @@ ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ByCodename("brno");
 LanguageIdentifier languageIdentifier = LanguageIdentifier.ByCodename("en-US");
 // LanguageIdentifier languageIdentifier = LanguageIdentifier.ById(Guid.Parse("00000000-0000-0000-0000-000000000000"));
 
+// Combines item and language identifiers into one
 ContentItemVariantIdentifier identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
+// Upserts a language variant of a content item
 ContentItemVariantModel<CafeModel> response = await client.UpsertContentItemVariantAsync<CafeModel>(identifier, stronglyTypedElements);
 ```
 
@@ -345,8 +357,9 @@ ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ByCodename("brno");
 LanguageIdentifier languageIdentifier = LanguageIdentifier.ByCodename("en-US");
 // LanguageIdentifier languageIdentifier = LanguageIdentifier.ById(Guid.Parse("00000000-0000-0000-0000-000000000000"));
 
+// Combines item and language identifiers into one
 ContentItemVariantIdentifier identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
-
+// Retrieves a language variant of a content item
 ContentItemVariantModel<CafeModel> response = await client.GetContentItemVariantAsync<CafeModel>(identifier);
 ```
 
@@ -357,6 +370,7 @@ ContentItemIdentifier identifier = ContentItemIdentifier.ByCodename("brno");
 // ContentItemIdentifier identifier = ContentItemIdentifier.ById(Guid.Parse("8ceeb2d8-9676-48ae-887d-47ccb0f54a79"));
 // ContentItemIdentifier identifier = ContentItemIdentifier.ByExternalId("Ext-Item-456-Brno");
 
+// Retrieves language variants of a content item
 IEnumerable<ContentItemVariantModel<CafeModel>> response = await client.ListContentItemVariantsAsync<CafeModel>(identifier);
 ```
 
@@ -370,6 +384,9 @@ ContentItemIdentifier itemIdentifier = ContentItemIdentifier.ByCodename("brno");
 LanguageIdentifier languageIdentifier = LanguageIdentifier.ByCodename("en-US");
 // LanguageIdentifier languageIdentifier = LanguageIdentifier.ById(Guid.Parse("00000000-0000-0000-0000-000000000000"));
 
+// Combines item and language identifiers into one
+ContentItemVariantIdentifier identifier = new ContentItemVariantIdentifier(itemIdentifier, languageIdentifier);
+// Deletes a language variant of a content item
 await client.DeleteContentItemVariantAsync(identifier);
 ```
 
@@ -408,6 +425,7 @@ AssetUpsertModel asset = new AssetUpsertModel
 
 string externalId = "Ext-Asset-123-png";
 
+// Upserts an asset by external ID
 AssetModel response = await client.UpsertAssetByExternalIdAsync(externalId, asset);
 ```
 
@@ -426,6 +444,7 @@ IEnumerable<AssetDescription> descriptions = new [] { assetDescription };
 string filePath = "‪C:\Users\Kentico\Desktop\puppies.png";
 string contentType = "image/png";
 
+// Creates a new asset using the given file and its descriptions
 AssetModel response = await client.CreateAssetAsync(new FileContentSource(filePath, contentType), descriptions);
 ```
 
@@ -435,12 +454,14 @@ AssetModel response = await client.CreateAssetAsync(new FileContentSource(filePa
 AssetIdentifier identifier = AssetIdentifier.ByExternalId("Ext-Asset-123-png");
 // AssetIdentifier identifier = AssetIdentifier.ById(Guid.Parse("fcbb12e6-66a3-4672-85d9-d502d16b8d9c"));
 
+// Retrieves an asset
 AssetModel response = await client.GetAssetAsync(identifier);
 ```
 
 #### Listing assets
 
 ```csharp
+// Retrieves a list of all assets
 ListingResponseModel<AssetModel> response = await client.ListAssetsAsync();
 
 while (true)
@@ -465,6 +486,7 @@ while (true)
 AssetIdentifier identifier = AssetIdentifier.ByExternalId("Ext-Asset-123-png");
 // AssetIdentifier identifier = AssetIdentifier.ById(Guid.Parse("fcbb12e6-66a3-4672-85d9-d502d16b8d9c"));
 
+// Deletes and asset
 client.DeleteAssetAsync(identifier);
 ```
 
