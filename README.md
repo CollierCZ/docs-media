@@ -84,6 +84,7 @@ ContentItemVariantUpsertModel upsertModel = new ContentItemVariantUpsertModel() 
 // Upserts a language variant of a content item
 ContentItemVariantModel<CafeModel> response = await client.UpsertContentItemVariantAsync<CafeModel>(identifier, upsertModel);
 ```
+
 However, we encourage you to use strongly-typed models for their convenience and type safety. Examples in this document use strongly-typed models where possible.
 
 ## Quick start
@@ -140,7 +141,7 @@ ArticleModel stronglyTypedElements = new ArticleModel
     ",
     RelatedArticles = new [] { ContentItemIdentifier.ByCodename("which_brewing_fits_you_") },
     UrlPattern = "on-roasts",
-    Personas = new [] { TaxonomyTermIdentifier.ByCodename("barista") }    
+    Personas = new [] { TaxonomyTermIdentifier.ByCodename("barista") }
 };
 
 // Specifies the content item and the language variant
@@ -300,7 +301,7 @@ while (true)
     {
         // use your content item
     }
-    
+
     if (!response.HasNextPage())
     {
         break;
@@ -471,7 +472,7 @@ while (true)
     {
         // use your asset
     }
-        
+
     if (!response.HasNextPage())
     {
         break;
@@ -487,7 +488,7 @@ while (true)
 AssetIdentifier identifier = AssetIdentifier.ByExternalId("Ext-Asset-123-png");
 // AssetIdentifier identifier = AssetIdentifier.ById(Guid.Parse("fcbb12e6-66a3-4672-85d9-d502d16b8d9c"));
 
-// Deletes and asset
+// Deletes an asset
 client.DeleteAssetAsync(identifier);
 ```
 
