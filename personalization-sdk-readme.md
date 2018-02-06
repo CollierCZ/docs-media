@@ -36,26 +36,22 @@ _User ID_ and _Session ID_ identify a specific visitor and his current session. 
 Once you create the `PersonalizationClient` instance, you can start querying the Personalization API by calling methods on the class instance.
 
 ```C#
-// Retrieves usual location of a visitor
+// Retrieves segments of a visitor
 var client = new PersonalizationClient("eyJh...5cCI");
-var location = await client.GetVisitorUsualLocationAsync("0f2a1fa152b8e92d");
+var visitorSegments = await client.GetVisitorSegmentsAsync("0f2a1fa152b8e92d");
 ```
 
 ```C#
-// Retrieves information about the first visit of a visitor
+// Retrieves all visitors belonging to a segment
 var client = new PersonalizationClient("eyJh...5cCI");
-var visit = await client.GetFirstVisitAsync("0f2a1fa152b8e92d");
+var visit = await client.GetVisitorsInSegmentAsync("Partners");
 ```
 
-```C#
-// Retrieves information about the current session of a visitor
-var client = new PersonalizationClient("eyJh...5cCI");
-var session = await client.GetCurrentSessionAsync("0f2a1fa152b8e92d", "8d532785326b0258");
-```
+
 
 ### Example – use in ASP.NET MVC applications
 
-The following example shows how you can use the Personalization API in an ASP.NET MVC application to find out where the current visitor came from (i.e., their origin) before browsing on your website.
+The following example shows how you can use the Personalization API in an ASP.NET MVC application to find out if the current visitor belongs to a *Potential job candidates* segment.
 
 ```C#
 using System.Threading.Tasks;
@@ -68,17 +64,17 @@ namespace DancingGoat.Controllers
     public class HomeController : Controller
     {
         // Initializes an instance of the PersonalizationClient class
-        private static readonly PersonalizationClient PersonalizationClient = new PersonalizationClient("eyJh...5cCI");
+        private static readonly PersonalizationClient PersonalizationClient = new PersonalizationClient(<YOUR_API_KEY);
 
         public async Task<ActionResult> Index()
         {
-            // Retrieves User ID and Session ID of the current visitor
+            // Retrieves User ID of the current visitor
             var uid = this.Request.GetCurrentPersonalizationUid();
-            var sid = this.Request.GetCurrentPersonalizationSid();
 
-            // Retrieves the origin of the visitor's session
+            // Retrieves segments of the visitor
             var session = await PersonalizationClient.GetCurrentSessionAsync(uid, sid);
-            ViewBag.PersonalizationSessionOrigin = session.Origin;
+            SegmentsResponse response = await client.GetVisitorSegmentsAsync(uid);
+            ViewBag.VisitorSegments = response.segments;
 
             return View();
         }
@@ -87,6 +83,12 @@ namespace DancingGoat.Controllers
 ```
 
 See [Personalizing content](https://developer.kenticocloud.com/docs/personalizing-content) in our DevHub for a more detailed explanation of delivering different content to different visitors.
+
+## Actively tracking visitors
+
+
+
+
 
 ## Feedback & Contributing
 Check out the [contributing](https://github.com/Kentico/personalization-sdk-net/blob/master/CONTRIBUTING.md) page to see the best places to file issues, start discussions and begin contributing.
