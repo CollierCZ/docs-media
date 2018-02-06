@@ -72,7 +72,6 @@ namespace DancingGoat.Controllers
             var uid = this.Request.GetCurrentPersonalizationUid();
 
             // Retrieves segments of the visitor
-            var session = await PersonalizationClient.GetCurrentSessionAsync(uid, sid);
             SegmentsResponse response = await client.GetVisitorSegmentsAsync(uid);
             ViewBag.VisitorSegments = response.segments;
 
@@ -86,7 +85,9 @@ See [Personalizing content](https://developer.kenticocloud.com/docs/personalizin
 
 ## Actively tracking visitors
 
+### Create TrackingClient instance
 
+The **TrackingClient** class in the `KenticoCloud.Personalization` assembly is enables you track your users directly using the [Tracking API](https://developer.kenticocloud.com/v1/reference#tracking-api-beta).
 
 
 
