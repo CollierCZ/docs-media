@@ -92,14 +92,15 @@ The **TrackingClient** class in the `KenticoCloud.Personalization` assembly enab
 ```C#
 // Records new session of a specified visitor, generates session ID automatically (and returns it)
 var client = new TrackingClient("https://engage-ket.kenticocloud.com", Guid.Parse("38af179c-40ba-42e7-a5ca-33b8cdcc0d45"));
-sid = client.RecordNewSession(<VISITOR_UID>);
+string uid = "7899852211af00000";
+sid = client.RecordNewSession(uid);
 ```
 
 ```C#
 // Records custom activity of a specified visitor during the specified session
 var client = new TrackingClient("https://engage-ket.kenticocloud.com", Guid.Parse("38af179c-40ba-42e7-a5ca-33b8cdcc0d45"));
 string uid = "1111136b4af00000";
-string sid = "7899852211af00000;
+string sid = "7899852211af0000";
 string activityName = "Clicked facebook icon";
 
 client.RecordActivity(uid, sid, activityName);
