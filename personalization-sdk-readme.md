@@ -96,19 +96,29 @@ sid = client.RecordNewSession(<VISITOR_UID>);
 ```
 
 ```C#
-// Records custom activity of a specified visitor in the specified session
+// Records custom activity of a specified visitor during the specified session
 var client = new TrackingClient("https://engage-ket.kenticocloud.com", Guid.Parse("38af179c-40ba-42e7-a5ca-33b8cdcc0d45"));
-string uid = ;
-string sid = ;
-string activityName = "Clicked 
+string uid = "1111136b4af00000";
+string sid = "7899852211af00000;
+string activityName = "Clicked facebook icon";
 
 client.RecordActivity(uid, sid, activityName);
 ```
 
 ```C#
-// Records new session of a visitor
+// Records information about the specified visitor
 var client = new TrackingClient("https://engage-ket.kenticocloud.com", Guid.Parse("38af179c-40ba-42e7-a5ca-33b8cdcc0d45"));
-client.RecordNewSession(<VISITOR_UID>);
+string uid = "1111136b4af00000";
+string sid = "7899852211af00000;
+Contant contact = new Contact {
+    Email = "johnsmith@gmail.com",
+    Company = "Alphabet",
+    Name = "John Smith",
+    Phone = "555-888-777",
+    Website = "johnsmith.blog.com"    
+}
+
+client.RecordVisitor(uid, sid, contact);
 ```
 
 
