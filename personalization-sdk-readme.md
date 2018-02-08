@@ -85,9 +85,11 @@ See [Personalizing content](https://developer.kenticocloud.com/docs/personalizin
 
 Our [Tracking API](https://developer.kenticocloud.com/reference#tracking-api-beta) is a write-only REST API that allows you to track your users or visitors directly, without the use of our JavaScript [tracking code](https://developer.kenticocloud.com/docs/enable-tracking). You can use it, for example, to track users in your mobile application.
 
-### Create TrackingClient instance
+### Creating TrackingClient instance
 
-The **TrackingClient** class in the `KenticoCloud.Personalization` assembly enables you to send information about your visitors or users to Kentico Cloud. At this time, it doesn't require the use of your Personalization API Key. It does require your [Project Id](https://developer.kenticocloud.com/docs/using-delivery-api#section-getting-project-id). 
+The **TrackingClient** class in the `KenticoCloud.Personalization` assembly enables you to send information about your visitors or users to Kentico Cloud. At this time, it doesn't require the use of your Personalization API Key. You only need to pass it your [Project Id](https://developer.kenticocloud.com/docs/using-delivery-api#section-getting-project-id). 
+
+#### Recording a session
 
 ```C#
 // Records new session of a specified visitor, generates session ID automatically (and returns it)
@@ -95,6 +97,8 @@ var client = new TrackingClient("https://engage-ket.kenticocloud.com", Guid.Pars
 string uid = "7899852211af00000";
 sid = client.RecordNewSession(uid);
 ```
+
+#### Recording a custom activity
 
 ```C#
 // Records custom activity of a specified visitor during the specified session
@@ -105,6 +109,8 @@ string activityName = "Clicked facebook icon";
 
 client.RecordActivity(uid, sid, activityName);
 ```
+
+#### Recording email and other information about a visitor
 
 ```C#
 // Records information about the specified visitor
@@ -121,8 +127,6 @@ Contant contact = new Contact {
 
 client.RecordVisitor(uid, sid, contact);
 ```
-
-
 
 ## Feedback & Contributing
 Check out the [contributing](https://github.com/Kentico/personalization-sdk-net/blob/master/CONTRIBUTING.md) page to see the best places to file issues, start discussions and begin contributing.
