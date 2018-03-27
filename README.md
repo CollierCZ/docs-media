@@ -212,7 +212,7 @@ ContentItemModel itemResponse = await client.UpsertContentItemByExternalIdAsync(
 // Upsert a language variant which references the asset using external ID
 CafeModel stronglyTypedElements = new CafeModel
 {
-    Picture = AssetIdentifier.ByExternalId(assetExternalId),
+    Picture = new [] { AssetIdentifier.ByExternalId(assetExternalId) },
     City = "Brno",
     Country = "Czech Republic"
 };
