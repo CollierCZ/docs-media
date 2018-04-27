@@ -43,14 +43,14 @@ Note: The only difference between these two dependencies is the 'Observable' the
 // Kentico Cloud project Id
 String projectId = "683771be-aa26-4887-b1b6-482f56418ffd";
 
-// Type resolvers are required as they convert the content items to models in runtime based on the 'system.type' 
-// property of your items.
+// Type resolvers are required to convert the retrieved content items to their strongly-typed models based on their 'system.type' 
+// property.
 List<TypeResolver<?>> typeResolvers = new ArrayList<>();
 
-// First you need to create the models representing your items. 
-// The following is an example of the sample 'Cafe' type.
-// Note that type resolvers are optional and you are not required to use them. However, the best
-// practise is to use safe types instead of relying on dynamic objects and values.
+// First, create strongly typed models representing your items. 
+// This is optional, but strongly recommended. It is best practise is to use safe types 
+// instead of relying on dynamic objects and values.
+// Here is an exemple of the sample 'Cafe' content type.
 public final class Cafe extends ContentItem {
 
     // This is the codename of your content type in Kentico Cloud
@@ -71,9 +71,9 @@ public final class Cafe extends ContentItem {
     }
 }
 
-// After you define your models, add type resolvers that will eventually convert items from JSON to your model in runtime.
-// Please note that currently you need to have models for all content types you intend to work with. We plan on releasing
-// an update that will be able to return generic ContentItem if strongly typed model is not found.
+// Adds type resolver that will eventually convert items from JSON to your strongly-typed model at runtime.
+// Please note that you currently need to have models for all content types you intend to work with. We plan on releasing
+// an update that will allow you to return generic ContentItem if the strongly-typed model is not found.
 typeResolvers.add(new TypeResolver<>(Cafe.TYPE, new Function<Void, Cafe>() {
     @Override
     public Cafe apply(Void input) {
@@ -82,7 +82,8 @@ typeResolvers.add(new TypeResolver<>(Cafe.TYPE, new Function<Void, Cafe>() {
     }
 ));
 
-// Prepares configuration object (Note that there are also other parameters, for example, preview API key)
+// Prepares configuration object.
+// Note that there are also other parameters, for example, a preview API key.
 DeliveryConfig config = DeliveryConfig.newConfig(projectId)
     .withTypeResolvers(typeResolvers);
 ```
@@ -159,9 +160,9 @@ List<Cafe> cafes = response.getItems();
 
 ### Property binding 
 
-First, make sure that your model extends the `ContentItem` class, then create public fields with an `ElementMapping` decorator which will make sure that the value from your field is mapped to the property. Based on the type of field, choose the proper element type. Supported element types include:
-
-`AssetsElement`, `ContentElement`, `DateTimeElement`, `ModularContentElement`, `MultipleChoiceElement`, `NumberElement`, `RichTextElement`, `TaxonomyElement`, `TextElement` and `UrlSlugElement`.
+1. Make sure that your model extends the `ContentItem` class.
+2. Create public fields with an `ElementMapping` decorator which will make sure that the value from your field is mapped to the property.
+3. Based on the type of field, choose the proper element type. Supported element types include: `AssetsElement`, `ContentElement`, `DateTimeElement`, `ModularContentElement`, `MultipleChoiceElement`, `NumberElement`, `RichTextElement`, `TaxonomyElement`, `TextElement` and `UrlSlugElement`.
 
 The following example shows a typical class with different elements:
 
@@ -262,9 +263,9 @@ cafesQuery.getObservable()
 
 ### Custom query parameters
 
-It is possible to create custom query parameters in case you need additional information in the URL. This can be useful if you use a proxy and need to log additional information.
+It is possible to create custom query parameters in case you need more information in the URL. This can be useful if you use a proxy and need to log additional information.
 
-To create custom parameter, implement `IQueryParameter` and use it in combination with the `addParameter` query method.
+To create a custom parameter, implement `IQueryParameter` and use it in combination with the `addParameter` query method.
 
 ```java
 public static class CustomFilter implements IQueryParameter {
@@ -299,7 +300,7 @@ To enable preview mode, pass your API Preview key to the configuration object:
 new DeliveryConfig(projectId, typeResolvers, "yourPreviewAPIKey");
 ```
 
-To make calls to Preview API globally, use a default `QueryConfig` during inicialization. This can be overridden when executing particular queries.
+To make calls to the Preview API globally, use a default `QueryConfig` during inicialization. This can be overridden when executing particular queries.
 
 ```java
 
