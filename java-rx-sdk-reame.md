@@ -43,17 +43,17 @@ Note: The only difference between these two dependencies is the 'Observable' the
 // Kentico Cloud project Id
 String projectId = "683771be-aa26-4887-b1b6-482f56418ffd";
 
-// Type resolvers are required to convert the retrieved content items to their strongly-typed models based on their 'system.type' 
-// property.
+// Type resolvers are required to convert the retrieved content items to their strongly-typed models
+// based on their 'system.type' property.
 List<TypeResolver<?>> typeResolvers = new ArrayList<>();
 
-// First, create strongly typed models representing your items. 
-// This is optional, but strongly recommended. It is best practice is to use safe types 
+// First, create strongly-typed models representing your items. 
+// This is optional, but strongly recommended. It is best practice to use safe types 
 // instead of relying on dynamic objects and values.
-// Here is an example of a strongly typed model of the 'Cafe' content type.
+// Here is an example of a strongly-typed model of the 'Cafe' content type.
 public final class Cafe extends ContentItem {
 
-    // This is the codename of your content type in Kentico Cloud
+    // Codename of your content type in Kentico Cloud
     public static final String TYPE = "cafe";
 
     @ElementMapping("country")
@@ -72,8 +72,9 @@ public final class Cafe extends ContentItem {
 }
 
 // Adds type resolver that will eventually convert items from JSON to your strongly-typed model at runtime.
-// Please note that you currently need to have models for all content types you intend to work with. We plan on releasing
-// an update that will allow you to return generic ContentItem if the strongly-typed model is not found.
+// Please note that you currently need to have models for all content types you intend to work with.
+// We plan on releasing an update that will allow you to return generic ContentItem if the 
+// strongly-typed model is not found.
 typeResolvers.add(new TypeResolver<>(Cafe.TYPE, new Function<Void, Cafe>() {
     @Override
     public Cafe apply(Void input) {
@@ -132,7 +133,7 @@ deliveryService.<Cafe>items()
             // Accesses cafe items
             List<Cafe> cafes = response.getItems();
 
-            // Uses methods from your strongly typed model
+            // Uses a method from your strongly typed model
             String country = cafes.get(0).getCountry();
         }
 
@@ -161,10 +162,10 @@ List<Cafe> cafes = response.getItems();
 ### Property binding 
 
 1. Make sure that your model extends the `ContentItem` class.
-2. Create public fields with an `ElementMapping` decorator which will make sure that the value from your field is mapped to the property.
+2. Create public fields with an `ElementMapping` decorator. This will make sure that the value from your field is mapped to the content item property.
 3. Based on the type of field, choose the proper element type. Supported element types include: `AssetsElement`, `ContentElement`, `DateTimeElement`, `ModularContentElement`, `MultipleChoiceElement`, `NumberElement`, `RichTextElement`, `TaxonomyElement`, `TextElement` and `UrlSlugElement`.
 
-The following example shows a typical class with different elements:
+The following example shows a typical class with different types of elements:
 
 ```java
 public final class Coffee extends ContentItem {
@@ -187,9 +188,9 @@ public final class Coffee extends ContentItem {
 
 ### Filtering, sorting
 
-SDK contains all available [filters](https://developer.kenticocloud.com/v1/reference#content-filtering) and other parameters ([sort](https://developer.kenticocloud.com/v1/reference#content-ordering), [projection](https://developer.kenticocloud.com/v1/reference#projection), [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging)) as predefined methods for each query type (e.g. different options are available for items and taxonomies query). All of these methods are written in a builder pattern which helps you create queries efficiently.
+The SDK contains all available [filters](https://developer.kenticocloud.com/v1/reference#content-filtering) and other parameters ([sort](https://developer.kenticocloud.com/v1/reference#content-ordering), [projection](https://developer.kenticocloud.com/v1/reference#projection), [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging)) as predefined methods for each query type (different options are available for items and taxonomies query). All of these methods are written in a builder pattern to helps you create queries more efficiently.
 
-Examples:
+Example:
 
 ```java
 MultipleItemQuery<Cafe> query = deliveryService.<Cafe>items()
@@ -208,7 +209,9 @@ MultipleItemQuery<Cafe> query = deliveryService.<Cafe>items()
 
 ### Querying data
 
-Each type of data (item, taxonomy, elements, etc.) can be obtained using the methods available in `IDeliveryClient`. The following are basic examples of different queries:
+Each type of data (item, taxonomy, elements, etc.) can be obtained using the methods available in `IDeliveryClient`. 
+
+Basic examples of different queries:
 
 ```java
 // items
@@ -294,7 +297,7 @@ MultipleItemQuery<Cafe> query = deliveryService.<Cafe>items()
 
 ### Preview mode
 
-To enable preview mode, pass your API Preview key to the configuration object:
+To enable preview mode, pass your API Preview key to the configuration object.
 
 ```java
 new DeliveryConfig(projectId, typeResolvers, "yourPreviewAPIKey");
@@ -342,13 +345,13 @@ During initialization of the `DeliveryConfig` you can configure the following op
 
 | Method        | Use
 | ------------- |:-------------:
-| withTypeResolvers | Sets type resolvers responsible for mapping response to strongly typed object
-| withPreviewApiKey      | Sets preview API key
-| withSecuredApiKey | Sets secured API key
-| withDeliveryApiUrl | Sets custom URL of Kentico Cloud Endpoint
-| withDeliveryPreviewApiUrl | Sets custom URL of Kentico Cloud preview Endpoint
-| withThrowExceptionForUnknownTypes | If enabled, SDK will throw Exception if it cannot find strongly typed model (type resolver) for certain item in response
-| withDefaultQueryConfig | Sets default query config for all queries made within SDK. This is useful when you want to set default behavior and then override it on a per-query level.
+| withTypeResolvers | Sets type resolvers responsible for mapping the API response to a strongly-typed model.
+| withPreviewApiKey      | Sets preview API key.
+| withSecuredApiKey | Sets secured API key.
+| withDeliveryApiUrl | Sets custom URL of a Kentico Cloud endpoint.
+| withDeliveryPreviewApiUrl | Sets custom URL of a Kentico Cloud preview endpoint.
+| withThrowExceptionForUnknownTypes | If enabled, the SDK will throw an Exception when it cannot find a strongly-typed model (type resolver) for an item in the response.
+| withDefaultQueryConfig | Sets default query config for all queries. This is useful when you want to set a default behavior and then override it on a per-query level.
 
 Example:
 
