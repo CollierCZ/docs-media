@@ -7,6 +7,8 @@
 | Android      | [![Android](https://img.shields.io/maven-central/v/com.kenticocloud/delivery-android.svg)](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22delivery-android%22) | [![Android](https://api.bintray.com/packages/kentico/KenticoCloudDeliveryJavaRxSDK/delivery-android/images/download.svg)](https://bintray.com/kentico/KenticoCloudDeliveryJavaRxSDK/delivery-android) |
 | JavaRx      | [![JavaRx](https://img.shields.io/maven-central/v/com.kenticocloud/delivery-rx.svg)](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22delivery-rx%22) | [![JavaRx](https://api.bintray.com/packages/kentico/KenticoCloudDeliveryJavaRxSDK/delivery-rx/images/download.svg)](https://bintray.com/kentico/KenticoCloudDeliveryJavaRxSDK/delivery-rx) |
 
+## Summary
+
 Kentico Cloud Delivery JavaRx/AndroidRx SDK is client library for retrieving content from [Kentico Cloud](https://kenticocloud.com/) written in Java 7 for both `Java` & `Android` projects. The SDK is available as `delivery-rx` and `delivery-android` on [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Ckenticocloud) and [jCenter](https://bintray.com/kentico-timothyf/kenticocloud-maven/delivery-rx).
 
 The SDK is built with [ReactiveX programming](http://reactivex.io/) and supports [RxJava2](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid) querying. However, it also integrates with [OkHttp](http://square.github.io/okhttp/) for those developers who do not want to use *Rx*.
@@ -126,10 +128,10 @@ deliveryService.<Cafe>items()
 
         @Override
         public void onNext(DeliveryItemListingResponse<Cafe> response) {
-            // Access cafe items
+            // Accesses cafe items
             List<Cafe> cafes = response.getItems();
 
-            // Use methods from your strongly typed model
+            // Uses methods from your strongly typed model
             String country = cafes.get(0).getCountry();
         }
 
@@ -159,7 +161,7 @@ List<Cafe> cafes = response.getItems();
 
 First, make sure that your model extends the `ContentItem` class, then create public fields with an `ElementMapping` decorator which will make sure that the value from your field is mapped to the property. Based on the type of field, choose the proper element type. Supported element types include:
 
-`AssetsElement`, `ContentElement`, `DateTimeElement`, `ModularContentElement`, `MultipleChoiceElement`, `NumberElement`, `RichTextElement`, `TaxonomyElement`, `TextElement` and `UrlSlugElement`
+`AssetsElement`, `ContentElement`, `DateTimeElement`, `ModularContentElement`, `MultipleChoiceElement`, `NumberElement`, `RichTextElement`, `TaxonomyElement`, `TextElement` and `UrlSlugElement`.
 
 The following example shows a typical class with different elements:
 
@@ -327,7 +329,7 @@ deliveryService.items()
     .getQueryUrl();
 ``` 
 
-Outputs
+The code above outputs the following URL:
 
 ```
 https://deliver.kenticocloud.com/683771be-aa26-4887-b1b6-482f56418ffd/items?elements.title=Warrior&limit=5&depth=2&skip=1
@@ -335,7 +337,7 @@ https://deliver.kenticocloud.com/683771be-aa26-4887-b1b6-482f56418ffd/items?elem
 
 ### Advanced configuration
 
-During initialization of `DeliveryConfig` you can configure the following options:
+During initialization of the `DeliveryConfig` you can configure the following options:
 
 | Method        | Use
 | ------------- |:-------------:
@@ -358,7 +360,7 @@ IDeliveryConfig config = DeliveryConfig.newConfig("projectId")
 
 ### Handling errors
 
-SDK will automatically map [Kentico Cloud error responses](https://developer.kenticocloud.com/v1/reference) to `KenticoCloudResponseException` runtime Exception that you can handle.
+The SDK will automatically map [Kentico Cloud error responses](https://developer.kenticocloud.com/v1/reference) to `KenticoCloudResponseException` runtime Exception that you can handle.
 
 ```java
 try {
