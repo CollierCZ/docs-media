@@ -9,9 +9,9 @@
 
 ## Summary
 
-Kentico Cloud Delivery JavaRx/AndroidRx SDK is client library for retrieving content from [Kentico Cloud](https://kenticocloud.com/) written in Java 7 for both `Java` & `Android` projects. The SDK is available as `delivery-rx` and `delivery-android` on [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Ckenticocloud) and [jCenter](https://bintray.com/kentico-timothyf/kenticocloud-maven/delivery-rx).
+Kentico Cloud Delivery JavaRx/AndroidRx SDK is a client library for retrieving content from [Kentico Cloud](https://kenticocloud.com/). It is written in Java 7 for both `Java` & `Android` projects. The SDK is available as `delivery-rx` and `delivery-android` on [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Ckenticocloud) and [jCenter](https://bintray.com/kentico-timothyf/kenticocloud-maven/delivery-rx).
 
-The SDK is built with [ReactiveX programming](http://reactivex.io/) and supports [RxJava2](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid) querying. However, it also integrates with [OkHttp](http://square.github.io/okhttp/) for those developers who do not want to use *Rx*.
+The SDK is built with [ReactiveX programming](http://reactivex.io/) and supports [RxJava2](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid) querying. It also integrates with [OkHttp](http://square.github.io/okhttp/) for those developers who do not want to use *Rx*.
 
 ## Prerequisites
 
@@ -40,7 +40,7 @@ Note: The only difference between these two dependencies is the 'Observable' the
 ### Configuration
 
 ```java
-// Kentico Cloud project Id
+// Kentico Cloud project ID
 String projectId = "683771be-aa26-4887-b1b6-482f56418ffd";
 
 // Type resolvers are required to convert the retrieved content items to their strongly-typed models
@@ -188,7 +188,7 @@ public final class Coffee extends ContentItem {
 
 ### Filtering, sorting
 
-The SDK contains all available [filters](https://developer.kenticocloud.com/v1/reference#content-filtering) and other parameters ([sort](https://developer.kenticocloud.com/v1/reference#content-ordering), [projection](https://developer.kenticocloud.com/v1/reference#projection), [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging)) as predefined methods for each query type (different options are available for items and taxonomies query). All of these methods are written in a builder pattern to helps you create queries more efficiently.
+The SDK contains all available [filters](https://developer.kenticocloud.com/v1/reference#content-filtering) and other parameters ([sort](https://developer.kenticocloud.com/v1/reference#content-ordering), [projection](https://developer.kenticocloud.com/v1/reference#projection), [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging)) as predefined methods for each query type (different options are available for items and taxonomies query). All of these methods are written in a builder pattern to help you create queries more efficiently.
 
 Example:
 
