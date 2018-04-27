@@ -7,9 +7,9 @@
 | Android      | [![Android](https://img.shields.io/maven-central/v/com.kenticocloud/delivery-android.svg)](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22delivery-android%22) | [![Android](https://api.bintray.com/packages/kentico/KenticoCloudDeliveryJavaRxSDK/delivery-android/images/download.svg)](https://bintray.com/kentico/KenticoCloudDeliveryJavaRxSDK/delivery-android) |
 | JavaRx      | [![JavaRx](https://img.shields.io/maven-central/v/com.kenticocloud/delivery-rx.svg)](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22delivery-rx%22) | [![JavaRx](https://api.bintray.com/packages/kentico/KenticoCloudDeliveryJavaRxSDK/delivery-rx/images/download.svg)](https://bintray.com/kentico/KenticoCloudDeliveryJavaRxSDK/delivery-rx) |
 
-A client library for retrieving content from [Kentico Cloud](https://kenticocloud.com/) written in Java 7 for both `Java` & `Android` projects.
+Kentico Cloud Delivery JavaRx/AndroidRx SDK is client library for retrieving content from [Kentico Cloud](https://kenticocloud.com/) written in Java 7 for both `Java` & `Android` projects. The SDK is available as `delivery-rx` and `delivery-android` on [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Ckenticocloud) and [jCenter](https://bintray.com/kentico-timothyf/kenticocloud-maven/delivery-rx).
 
-Even though the SDK is built with [ReactiveX programming](http://reactivex.io/) and supports [RxJava2](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid) querying, it also integrates with [OkHttp](http://square.github.io/okhttp/) for those developers who do not want to use Rx or are not familiar with it.
+The SDK is built with [ReactiveX programming](http://reactivex.io/) and supports [RxJava2](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid) querying. However, it also integrates with [OkHttp](http://square.github.io/okhttp/) for those developers who do not want to use *Rx*.
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ Android 2.3+ (minSdk 21)
 
 ## Getting started
 
-The first step is to include SDK into your project, for example, as a Gradle compile dependency. Based on the project type choose of the following:
+The first step is to include the SDK into your project, for example, as a Gradle compile dependency. Based on your project type, choose one of the following:
 
 #### Java
 
@@ -33,7 +33,7 @@ compile 'com.kenticocloud:delivery-rx:2.0.1'
 compile 'com.kenticocloud:delivery-android:2.0.1'
 ```
 
-Note: The only difference between these two dependencies is the 'Observable' they present for ReactiveX to subscribe to. Android will present a standard Rx2AndroidNetworking request while Java will present a generic http request as an observable. Most of your imports will be from the shared com.kenticocloud.delivery_core which is automatically included with both packages.
+Note: The only difference between these two dependencies is the 'Observable' they present for ReactiveX to subscribe to. Android will present a standard *Rx2AndroidNetworking* request while Java will present a generic *http* request as an observable. Most of your imports will be from the shared `com.kenticocloud.delivery_core` which is automatically included with both packages.
 
 ### Configuration
 
@@ -41,12 +41,12 @@ Note: The only difference between these two dependencies is the 'Observable' the
 // Kentico Cloud project Id
 String projectId = "683771be-aa26-4887-b1b6-482f56418ffd";
 
-// Type resolvers are required as they convert the content items to models in runtime based on 'system.type' 
+// Type resolvers are required as they convert the content items to models in runtime based on the 'system.type' 
 // property of your items.
 List<TypeResolver<?>> typeResolvers = new ArrayList<>();
 
-// First you need to create models representing your items. 
-// Following is an example of the sample Cafe type.
+// First you need to create the models representing your items. 
+// The following is an example of the sample 'Cafe' type.
 // Note that type resolvers are optional and you are not required to use them. However, the best
 // practise is to use safe types instead of relying on dynamic objects and values.
 public final class Cafe extends ContentItem {
@@ -69,7 +69,7 @@ public final class Cafe extends ContentItem {
     }
 }
 
-// After you define models, we add type resolvers that will eventually convert items from JSON to your model in runtime.
+// After you define your models, add type resolvers that will eventually convert items from JSON to your model in runtime.
 // Please note that currently you need to have models for all content types you intend to work with. We plan on releasing
 // an update that will be able to return generic ContentItem if strongly typed model is not found.
 typeResolvers.add(new TypeResolver<>(Cafe.TYPE, new Function<Void, Cafe>() {
@@ -80,7 +80,7 @@ typeResolvers.add(new TypeResolver<>(Cafe.TYPE, new Function<Void, Cafe>() {
     }
 ));
 
-// Prepare configuration object (note there are other parameters for e.g. preview API key)
+// Prepares configuration object (Note that there are also other parameters, for example, preview API key)
 DeliveryConfig config = DeliveryConfig.newConfig(projectId)
     .withTypeResolvers(typeResolvers);
 ```
@@ -157,11 +157,11 @@ List<Cafe> cafes = response.getItems();
 
 ### Property binding 
 
-First, make sure that your model extends `ContentItem` class, then create public fields with `ElementMapping` decorator which will make sure that the value from your field is mapped to the property. Based on what type of field you have, choose the proper element type. Supported element types include:
+First, make sure that your model extends the `ContentItem` class, then create public fields with an `ElementMapping` decorator which will make sure that the value from your field is mapped to the property. Based on the type of field, choose the proper element type. Supported element types include:
 
 `AssetsElement`, `ContentElement`, `DateTimeElement`, `ModularContentElement`, `MultipleChoiceElement`, `NumberElement`, `RichTextElement`, `TaxonomyElement`, `TextElement` and `UrlSlugElement`
 
-Example below shows a typical class with different elements:
+The following example shows a typical class with different elements:
 
 ```java
 public final class Coffee extends ContentItem {
@@ -184,7 +184,7 @@ public final class Coffee extends ContentItem {
 
 ### Filtering, sorting
 
-SDK contains all available [filters](https://developer.kenticocloud.com/v1/reference#content-filtering) and other parameters ([sort](https://developer.kenticocloud.com/v1/reference#content-ordering), [projection](https://developer.kenticocloud.com/v1/reference#projection), [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging)) as predefined methods for each query type (e.g. different options are available for items and taxonomies query). All of these methods are written in builder pattern which helps developers efficiently creating their queries. 
+SDK contains all available [filters](https://developer.kenticocloud.com/v1/reference#content-filtering) and other parameters ([sort](https://developer.kenticocloud.com/v1/reference#content-ordering), [projection](https://developer.kenticocloud.com/v1/reference#projection), [paging](https://developer.kenticocloud.com/v1/reference#listing-response-paging)) as predefined methods for each query type (e.g. different options are available for items and taxonomies query). All of these methods are written in a builder pattern which helps you create queries efficiently.
 
 Examples:
 
@@ -196,7 +196,7 @@ MultipleItemQuery<Cafe> query = deliveryService.<Cafe>items()
     .orderParameter("elements.street", OrderType.Desc);
 ```
 
-If you need to add other query parameters to URL directly, you can use `addParameter` method:
+If you need to add other query parameters to the URL directly, you can use the `addParameter` method:
 
 ```java
 MultipleItemQuery<Cafe> query = deliveryService.<Cafe>items()
@@ -205,7 +205,7 @@ MultipleItemQuery<Cafe> query = deliveryService.<Cafe>items()
 
 ### Querying data
 
-Each type of data (item, taxonomy, elements etc.) can be obtained using the available methods in `IDeliveryClient`. Following are basic examples of different queries:
+Each type of data (item, taxonomy, elements etc.) can be obtained using the methods available in `IDeliveryClient`. The following are basic examples of different queries:
 
 ```java
 // items
@@ -224,7 +224,7 @@ MultipleTaxonomyQuery taxonomiesQuery = deliveryService.taxonomies();
 SingleContentTypeElementQuery elementQuery = deliveryService.contenTypeElement("cafe", "country");
 ```
 
-To execute query choose either `get` or `getObservable` method whether you want to work with [ReactiveX](http://reactivex.io) API or not.
+To execute a query, choose either `get` or `getObservable` method depending on whether you want to work with the [ReactiveX](http://reactivex.io) API or not.
 
 ```java
 // Get examples
@@ -260,9 +260,9 @@ cafesQuery.getObservable()
 
 ### Custom query parameters
 
-It is possible to create custom query parameters in case you need to have some additional information in URL. This can be useful if you use proxy and need to log some additional information.
+It is possible to create custom query parameters in case you need additional information in the URL. This can be useful if you use a proxy and need to log additional information.
 
-To create custom parameter implement `IQueryParameter` and use it in combination with `addParameter` query method.
+To create custom parameter, implement `IQueryParameter` and use it in combination with the `addParameter` query method.
 
 ```java
 public static class CustomFilter implements IQueryParameter {
@@ -297,18 +297,18 @@ To enable preview mode, pass your API Preview key to the configuration object:
 new DeliveryConfig(projectId, typeResolvers, "yourPreviewAPIKey");
 ```
 
-To make calls against preview API globally, use default `QueryConfig` during inicialization. This can be overridden when executing particular queries. 
+To make calls to Preview API globally, use a default `QueryConfig` during inicialization. This can be overridden when executing particular queries.
 
 ```java
 
-// Configure default global query config that will enable preview mode by default.
+// Configures default global query config that will enable preview mode by default.
 QueryConfig defaultQueryConfig = new QueryConfig();
 defaultQueryConfig.setUsePreviewMode(true);
 
 DeliveryConfig config = new DeliveryConfig(projectId, typeResolvers, defaultQueryConfig);
 
 
-// Enable preview mode for a specific call. This overrides global configuration.
+// Enables preview mode for a specific call. This overrides global configuration.
 MultipleItemQuery<Cafe> query = deliveryService.<Cafe>items()
     .type(Cafe.TYPE)
     .setUsePreviewMode(true);
@@ -316,7 +316,7 @@ MultipleItemQuery<Cafe> query = deliveryService.<Cafe>items()
 
 ### Getting URL of query
 
-You can get URL of the query without executing it by calling `getQueryUrl` method on any `IQuery` object.
+You can get the URL of a query without executing it by calling the `getQueryUrl` method on any `IQuery` object.
 
 ```java
 deliveryService.items()
@@ -335,7 +335,7 @@ https://deliver.kenticocloud.com/683771be-aa26-4887-b1b6-482f56418ffd/items?elem
 
 ### Advanced configuration
 
-During initialization of `DeliveryConfig` you can configure following options:
+During initialization of `DeliveryConfig` you can configure the following options:
 
 | Method        | Use
 | ------------- |:-------------:
