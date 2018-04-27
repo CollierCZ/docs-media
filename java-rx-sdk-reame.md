@@ -48,9 +48,9 @@ String projectId = "683771be-aa26-4887-b1b6-482f56418ffd";
 List<TypeResolver<?>> typeResolvers = new ArrayList<>();
 
 // First, create strongly typed models representing your items. 
-// This is optional, but strongly recommended. It is best practise is to use safe types 
+// This is optional, but strongly recommended. It is best practice is to use safe types 
 // instead of relying on dynamic objects and values.
-// Here is an exemple of the sample 'Cafe' content type.
+// Here is an example of a strongly typed model of the 'Cafe' content type.
 public final class Cafe extends ContentItem {
 
     // This is the codename of your content type in Kentico Cloud
@@ -208,7 +208,7 @@ MultipleItemQuery<Cafe> query = deliveryService.<Cafe>items()
 
 ### Querying data
 
-Each type of data (item, taxonomy, elements etc.) can be obtained using the methods available in `IDeliveryClient`. The following are basic examples of different queries:
+Each type of data (item, taxonomy, elements, etc.) can be obtained using the methods available in `IDeliveryClient`. The following are basic examples of different queries:
 
 ```java
 // items
@@ -300,7 +300,7 @@ To enable preview mode, pass your API Preview key to the configuration object:
 new DeliveryConfig(projectId, typeResolvers, "yourPreviewAPIKey");
 ```
 
-To make calls to the Preview API globally, use a default `QueryConfig` during inicialization. This can be overridden when executing particular queries.
+To make calls to the Preview API globally, use a default `QueryConfig` during initialization. This can be overridden when executing particular queries.
 
 ```java
 
@@ -348,7 +348,7 @@ During initialization of the `DeliveryConfig` you can configure the following op
 | withDeliveryApiUrl | Sets custom URL of Kentico Cloud Endpoint
 | withDeliveryPreviewApiUrl | Sets custom URL of Kentico Cloud preview Endpoint
 | withThrowExceptionForUnknownTypes | If enabled, SDK will throw Exception if it cannot find strongly typed model (type resolver) for certain item in response
-| withDefaultQueryConfig | Sets default query config for all queries made within SDK. This is useful when you want to set default behavior and then override it on per query level.
+| withDefaultQueryConfig | Sets default query config for all queries made within SDK. This is useful when you want to set default behavior and then override it on a per-query level.
 
 Example:
 
