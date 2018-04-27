@@ -243,10 +243,10 @@ cafesQuery.getObservable()
 
         @Override
         public void onNext(DeliveryItemListingResponse<Cafe> response) {
-            // Access cafe items
+            // Accesses cafe items
             List<Cafe> cafes = response.getItems();
 
-            // Use methods from your strongly typed model
+            // Uses methods from your strongly typed model
             String country = cafes.get(0).getCountry();
         }
 
