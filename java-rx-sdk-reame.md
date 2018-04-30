@@ -9,7 +9,7 @@
 
 ## Summary
 
-Kentico Cloud Delivery JavaRx/AndroidRx SDK is a client library for retrieving content from [Kentico Cloud](https://kenticocloud.com/). It is written in Java 7 for both `Java` & `Android` projects. The SDK is available as `delivery-rx` and `delivery-android` on [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Ckenticocloud) and [jCenter](https://bintray.com/kentico-timothyf/kenticocloud-maven/delivery-rx).
+Kentico Cloud Delivery JavaRx/AndroidRx SDK is a client library for retrieving content from [Kentico Cloud](https://kenticocloud.com/). It is written in Java 7 for both Java & Android projects. The SDK is available as `delivery-rx` and `delivery-android` on [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Ckenticocloud) and [jCenter](https://bintray.com/kentico-timothyf/kenticocloud-maven/delivery-rx).
 
 The SDK is built with [ReactiveX programming](http://reactivex.io/) and supports [RxJava2](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid) querying. It also integrates with [OkHttp](http://square.github.io/okhttp/) for those developers who do not want to use *Rx*.
 
@@ -21,7 +21,7 @@ Android 2.3+ (minSdk 21)
 
 ## Getting started
 
-The first step is to include the SDK into your project, for example, as a Gradle compile dependency. Based on your project type, choose one of the following:
+The first step is to include the SDK in your project, for example, as a Gradle compile dependency. Based on your project type, choose one of the following:
 
 #### Java
 
@@ -35,7 +35,7 @@ compile 'com.kenticocloud:delivery-rx:2.0.1'
 compile 'com.kenticocloud:delivery-android:2.0.1'
 ```
 
-Note: The only difference between these two dependencies is the 'Observable' they present for ReactiveX to subscribe to. Android will present a standard *Rx2AndroidNetworking* request while Java will present a generic *http* request as an observable. Most of your imports will be from the shared `com.kenticocloud.delivery_core` which is automatically included with both packages.
+*Note*: The only difference between these two dependencies is the 'Observable' they present for ReactiveX to subscribe to. Android will present a standard *Rx2AndroidNetworking* request while Java will present a generic *http* request as an observable. Most of your imports will be from the shared `com.kenticocloud.delivery_core` which is automatically included with both packages.
 
 ### Configuration
 
@@ -50,6 +50,7 @@ List<TypeResolver<?>> typeResolvers = new ArrayList<>();
 // First, create strongly-typed models representing your items. 
 // This is optional, but strongly recommended. It is best practice to use safe types 
 // instead of relying on dynamic objects and values.
+// See https://developer.kenticocloud.com/v1/docs/strongly-typed-models for more details.
 // Here is an example of a strongly-typed model of the 'Cafe' content type.
 public final class Cafe extends ContentItem {
 
@@ -71,8 +72,8 @@ public final class Cafe extends ContentItem {
     }
 }
 
-// Adds type resolver that will eventually convert items from JSON to your strongly-typed model at runtime.
-// Please note that you currently need to have models for all content types you intend to work with.
+// Adds a type resolver that will eventually convert items from JSON to your strongly-typed models at runtime.
+// Please note that you currently need to have models for all content types you want to work with.
 // We plan on releasing an update that will allow you to return generic ContentItem if the 
 // strongly-typed model is not found.
 typeResolvers.add(new TypeResolver<>(Cafe.TYPE, new Function<Void, Cafe>() {
@@ -130,7 +131,7 @@ deliveryService.<Cafe>items()
 
         @Override
         public void onNext(DeliveryItemListingResponse<Cafe> response) {
-            // Accesses cafe items
+            // Gets cafe items
             List<Cafe> cafes = response.getItems();
 
             // Uses a method from your strongly typed model
@@ -162,7 +163,7 @@ List<Cafe> cafes = response.getItems();
 ### Property binding 
 
 1. Make sure that your model extends the `ContentItem` class.
-2. Create public fields with an `ElementMapping` decorator. This will make sure that the value from your field is mapped to the content item property.
+2. Create public fields with an `ElementMapping` decorator. This will make sure that the value from your field is mapped to the content item element.
 3. Based on the type of field, choose the proper element type. Supported element types include: `AssetsElement`, `ContentElement`, `DateTimeElement`, `ModularContentElement`, `MultipleChoiceElement`, `NumberElement`, `RichTextElement`, `TaxonomyElement`, `TextElement` and `UrlSlugElement`.
 
 The following example shows a typical class with different types of elements:
@@ -214,19 +215,19 @@ Each type of data (item, taxonomy, elements, etc.) can be obtained using the met
 Basic examples of different queries:
 
 ```java
-// items
+// Gets items
 SingleItemQuery<Cafe> cafeQuery = deliveryService.<Cafe>item("boston");
 MultipleItemQuery<Cafe> cafesQuery = deliveryService.<Cafe>items();
 
-// types
+// Gets types
 SingleTypeQuery typeQuery = deliveryService.type("Cafe");
 MultipleTypeQuery typesQuery = deliveryService.types();
 
-// taxonomies
+// Gets taxonomies
 SingleTaxonomyQuery taxonomyQuery = deliveryService.taxonomy("personas");
 MultipleTaxonomyQuery taxonomiesQuery = deliveryService.taxonomies();
 
-// elements
+// Gets elements
 SingleContentTypeElementQuery elementQuery = deliveryService.contenTypeElement("cafe", "country");
 ```
 
@@ -246,10 +247,10 @@ cafesQuery.getObservable()
 
         @Override
         public void onNext(DeliveryItemListingResponse<Cafe> response) {
-            // Accesses cafe items
+            // Gets cafe items
             List<Cafe> cafes = response.getItems();
 
-            // Uses methods from your strongly typed model
+            // Uses a method from your strongly typed model
             String country = cafes.get(0).getCountry();
         }
 
@@ -297,7 +298,7 @@ MultipleItemQuery<Cafe> query = deliveryService.<Cafe>items()
 
 ### Preview mode
 
-To enable preview mode, pass your API Preview key to the configuration object.
+To enable preview mode, pass your Preview API key to the configuration object.
 
 ```java
 new DeliveryConfig(projectId, typeResolvers, "yourPreviewAPIKey");
@@ -345,7 +346,7 @@ During initialization of the `DeliveryConfig` you can configure the following op
 
 | Method        | Use
 | ------------- |:-------------:
-| withTypeResolvers | Sets type resolvers responsible for mapping the API response to a strongly-typed model.
+| withTypeResolvers | Sets type resolvers responsible for mapping the API responses to strongly-typed models.
 | withPreviewApiKey      | Sets preview API key.
 | withSecuredApiKey | Sets secured API key.
 | withDeliveryApiUrl | Sets custom URL of a Kentico Cloud endpoint.
