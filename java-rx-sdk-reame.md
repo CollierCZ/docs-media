@@ -49,8 +49,8 @@ List<TypeResolver<?>> typeResolvers = new ArrayList<>();
 
 // First, create strongly-typed models representing your items. 
 // This is optional, but strongly recommended. It is best practice to use safe types 
-// instead of relying on dynamic objects and values.
-// See https://developer.kenticocloud.com/v1/docs/strongly-typed-models for more details.
+// instead of relying on dynamic objects and values. For more details, see
+// https://developer.kenticocloud.com/v1/docs/strongly-typed-models
 // Here is an example of a strongly-typed model of the 'Cafe' content type.
 public final class Cafe extends ContentItem {
 
@@ -134,7 +134,7 @@ deliveryService.<Cafe>items()
             // Gets cafe items
             List<Cafe> cafes = response.getItems();
 
-            // Uses a method from your strongly typed model
+            // Uses a method from your strongly-typed model
             String country = cafes.get(0).getCountry();
         }
 
@@ -238,7 +238,7 @@ To execute a query, choose either `get` or `getObservable` method depending on w
 Cafe cafe = cafeQuery.get().getItem();
 List<Cafe> cafes = cafesQuery.get().getItems();
 
- // Observable examples
+// Observable examples
 cafesQuery.getObservable()
     .subscribe(new Observer<DeliveryItemListingResponse<Cafe>>() {
         @Override
@@ -346,7 +346,7 @@ During initialization of the `DeliveryConfig` you can configure the following op
 
 | Method        | Use
 | ------------- |:-------------:
-| withTypeResolvers | Sets type resolvers responsible for mapping the API responses to strongly-typed models.
+| withTypeResolvers | Sets type resolvers responsible for mapping API responses to strongly-typed models.
 | withPreviewApiKey      | Sets preview API key.
 | withSecuredApiKey | Sets secured API key.
 | withDeliveryApiUrl | Sets custom URL of a Kentico Cloud endpoint.
@@ -365,7 +365,7 @@ IDeliveryConfig config = DeliveryConfig.newConfig("projectId")
 
 ### Handling errors
 
-The SDK will automatically map [Kentico Cloud error responses](https://developer.kenticocloud.com/v1/reference) to `KenticoCloudResponseException` runtime Exception that you can handle.
+The SDK will automatically map [Kentico Cloud error responses](https://developer.kenticocloud.com/v1/reference) to `KenticoCloudResponseException` runtime exception that you can handle.
 
 ```java
 try {
