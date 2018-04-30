@@ -304,11 +304,11 @@ To enable preview mode, pass your Preview API key to the configuration object.
 new DeliveryConfig(projectId, typeResolvers, "yourPreviewAPIKey");
 ```
 
-To make calls to the Preview API globally, use a default `QueryConfig` during initialization. This can be overridden when executing particular queries.
+To make calls to the Preview API globally, use a default `QueryConfig` during initialization. You can override this when executing particular queries.
 
 ```java
 
-// Configures default global query config that will enable preview mode by default.
+// Configures global query config that will enable preview mode by default.
 QueryConfig defaultQueryConfig = new QueryConfig();
 defaultQueryConfig.setUsePreviewMode(true);
 
@@ -351,7 +351,7 @@ During initialization of the `DeliveryConfig` you can configure the following op
 | withSecuredApiKey | Sets secured API key.
 | withDeliveryApiUrl | Sets custom URL of a Kentico Cloud endpoint.
 | withDeliveryPreviewApiUrl | Sets custom URL of a Kentico Cloud preview endpoint.
-| withThrowExceptionForUnknownTypes | If enabled, the SDK will throw an Exception when it cannot find a strongly-typed model (type resolver) for an item in the response.
+| withThrowExceptionForUnknownTypes | If enabled, the SDK will throw an Exception when it cannot find a strongly-typed model (type resolver) of an item in the response.
 | withDefaultQueryConfig | Sets default query config for all queries. This is useful when you want to set a default behavior and then override it on a per-query level.
 
 Example:
@@ -365,7 +365,7 @@ IDeliveryConfig config = DeliveryConfig.newConfig("projectId")
 
 ### Handling errors
 
-The SDK will automatically map [Kentico Cloud error responses](https://developer.kenticocloud.com/v1/reference) to `KenticoCloudResponseException` runtime exception that you can handle.
+The SDK will automatically map [Kentico Cloud error responses](https://developer.kenticocloud.com/v1/reference) to a `KenticoCloudResponseException` runtime exception that you can handle.
 
 ```java
 try {
