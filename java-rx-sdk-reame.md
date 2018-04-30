@@ -35,7 +35,7 @@ compile 'com.kenticocloud:delivery-rx:2.0.1'
 compile 'com.kenticocloud:delivery-android:2.0.1'
 ```
 
-*Note*: The only difference between these two dependencies is the 'Observable' they present for ReactiveX to subscribe to. Android will present a standard *Rx2AndroidNetworking* request while Java will present a generic *http* request as an observable. Most of your imports will be from the shared `com.kenticocloud.delivery_core` which is automatically included with both packages.
+*Note*: The only difference between these two dependencies is the 'Observable' they present for ReactiveX to subscribe to. Android will present a standard *Rx2AndroidNetworking* request while Java will present a generic *http* request as an observable. Most of your imports will come from the shared `com.kenticocloud.delivery_core` which is automatically included with both packages.
 
 ### Configuration
 
@@ -44,7 +44,7 @@ compile 'com.kenticocloud:delivery-android:2.0.1'
 String projectId = "683771be-aa26-4887-b1b6-482f56418ffd";
 
 // Type resolvers are required to convert the retrieved content items to their strongly-typed models
-// based on their 'system.type' property.
+// based on their 'system.type' property
 List<TypeResolver<?>> typeResolvers = new ArrayList<>();
 
 // First, create strongly-typed models representing your items. 
@@ -84,8 +84,8 @@ typeResolvers.add(new TypeResolver<>(Cafe.TYPE, new Function<Void, Cafe>() {
     }
 ));
 
-// Prepares configuration object.
-// Note that there are also other parameters, for example, a preview API key.
+// Prepares configuration object
+// Note that there are also other parameters, for example, a preview API key
 DeliveryConfig config = DeliveryConfig.newConfig(projectId)
     .withTypeResolvers(typeResolvers);
 ```
