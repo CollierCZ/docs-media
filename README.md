@@ -405,7 +405,7 @@ string languageCodename = "en-US";
 var linkBuilder = new EditLinkBuilder(options);
 var result = linkBuilder.BuildEditItemUrl(languageCodename, itemId);
 // Result is "https://app.kenticocloud.com/goto/edit-item/project/bb6882a0-3088-405c-a6ac-4a0da46810b0/
-variant-codename/en-US/item/8ceeb2d8-9676-48ae-887d-47ccb0f54a79"
+// variant-codename/en-US/item/8ceeb2d8-9676-48ae-887d-47ccb0f54a79"
 ```
 
 ### Asset methods
