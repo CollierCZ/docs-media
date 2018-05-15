@@ -32,13 +32,13 @@ client = new PersonalDataClient("https://personal-data-api.kenticocloud.com/", a
 
 ### Retrieving personal data of tracked visitors
 
-#### Getting data by email address
+* Getting data by email address:
 
 ```csharp
 var response = await client.GetByEmailAsync("kroberts2y@godaddy.com");
 ```
 
-#### Getting data by User ID:
+* Getting data by User ID:
 
 ```csharp
 var response = await client.GetByUidAsync("aad50bb1223e4199");
@@ -46,13 +46,13 @@ var response = await client.GetByUidAsync("aad50bb1223e4199");
 
 ### Deleting personal data of tracked visitors
 
-#### Deleting data by email address:
+* Deleting data by email address:
 
 ```csharp
 client.DeleteByEmailAsync("kroberts2y@godaddy.com");
 ```
 
-#### Deleting data by User ID:
+* Deleting data by User ID:
 
 ```csharp
 client.DeleteByUidAsync("aad50bb1223e4199");
