@@ -14,7 +14,7 @@ The Kentico Cloud Personal Data .NET SDK is a client library used for retrieving
 
 To retrieve and delete data from Kentico Cloud via the Personal Data API, you need to have a Kentico Cloud subscription at <https://app.kenticocloud.com>. For more information see our [documentation](http://help.kenticocloud.com/).
 
-#### Getting a User ID of a tracked visitor
+### Getting User ID
 
 Some methods of the SDK work with User ID, which identifies a specific visitor on your website. You can get this value either by [parsing the content of a cookie](https://github.com/Kentico/personalization-sdk-net#getting-userid-and-sessionid) stored by the tracking code in the browser or by calling a JavaScript method in the code of your website. For more details, see [Identifying visitors on websites](https://developer.kenticocloud.com/docs/retrieving-user-and-session-id).
 
