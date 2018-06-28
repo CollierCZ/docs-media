@@ -1,0 +1,98 @@
+{
+  "openapi" : "3.0.0",
+  "servers" : [ {
+    "url" : "https://engage-api.kenticocloud.com/v3"
+  } ],
+  "info" : {
+    "description" : "The Personalization API is a read-only REST API that retrieves data about your visitors and their segments.The base URL for all requests is https://engage-api.kenticocloud.com/v3/. All requests to the API must be made securely with HTTPS with TLS 1.2 and authenticated with a valid API key.",
+    "version" : "1.0.0-oas3",
+    "title" : "Personalization API v3"
+  },
+  "paths" : {
+    "/visitor/{projectId}/{uid}/segments" : {
+      "get" : {
+        "summary" : "Retrieve the names of segments that the specified visitor belongs to.",
+        "operationId" : "listSegmentsOfVisitor",
+        "description" : "A Segments object containing the codenames of all segments the visitor belongs to. If the specified visitor is not a member of any segments, an empty Segments object is returned.\n",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "projectId",
+          "description" : "The ID of your project.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "uid",
+          "description" : "The ID of a visitor. Example \n",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A colleciton of segments the specified visitor belongs to.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SegmentsObject"
+                }
+              }
+            }
+          },
+          "201" : {
+            "description" : "No results.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EmptySegmentsObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "SegmentsObject" : {
+        "type" : "object",
+        "required" : [ "segments" ],
+        "properties" : {
+          "segments" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Segment"
+            }
+          }
+        }
+      },
+      "EmptySegmentsObject" : {
+        "type" : "object",
+        "required" : [ "segments" ],
+        "properties" : {
+          "segments" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Segment"
+            },
+            "example" : [ ]
+          }
+        }
+      },
+      "Segment" : {
+        "required" : [ "codename" ],
+        "properties" : {
+          "codename" : {
+            "type" : "string",
+            "example" : "potential_job_candidates"
+          }
+        },
+        "type" : "object"
+      }
+    }
+  }
+}
