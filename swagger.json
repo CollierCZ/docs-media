@@ -1,0 +1,92 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "The Personalization API is a read-only REST API that retrieves data about your visitors and their segments.The base URL for all requests is https://engage-api.kenticocloud.com/v3/. All requests to the API must be made securely with HTTPS with TLS 1.2 and authenticated with a valid API key.",
+    "version" : "1.0.0",
+    "title" : "Personalization API v3"
+  },
+  "host" : "engage-api.kenticocloud.com",
+  "basePath" : "/v3",
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/visitor/{projectId}/{uid}/segments" : {
+      "get" : {
+        "summary" : "Retrieve the names of segments that the specified visitor belongs to.",
+        "description" : "A Segments object containing the codenames of all segments the visitor belongs to.        If the specified visitor is not a member of any segments, an empty Segments object is returned.",
+        "operationId" : "listSegmentsOfVisitor",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "projectId",
+          "in" : "path",
+          "description" : "The ID of your project. Example: `569030c7-52a5-44f5-a243-c5285b3eb24e`.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "uid",
+          "in" : "path",
+          "description" : "The ID of a visitor. Example: `e3e9e191a12b9257`.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A collection of segments the specified visitor belongs to.",
+            "schema" : {
+              "$ref" : "#/definitions/SegmentsObject"
+            }
+          },
+          "201" : {
+            "description" : "No results",
+            "schema" : {
+              "type" : "object",
+              "example" : {
+                "segments" : [ ]
+              },
+              "properties" : { }
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "Bearer" : {
+      "type" : "apiKey",
+      "name" : "Authorization",
+      "in" : "header"
+    }
+  },
+  "definitions" : {
+    "SegmentsObject" : {
+      "type" : "object",
+      "required" : [ "segments" ],
+      "properties" : {
+        "segments" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Segment"
+          }
+        }
+      },
+      "example" : {
+        "segments" : [ {
+          "codename" : "potential_job_candidates"
+        }, {
+          "codename" : "potential_job_candidates"
+        } ]
+      }
+    },
+    "Segment" : {
+      "required" : [ "codename" ],
+      "properties" : {
+        "codename" : {
+          "type" : "string",
+          "example" : "potential_job_candidates"
+        }
+      },
+      "example" : {
+        "codename" : "potential_job_candidates"
+      }
+    }
+  }
+}
