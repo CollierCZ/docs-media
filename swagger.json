@@ -177,5 +177,6 @@
       "required" : true,
       "type" : "string"
     }
-  }
+  },
+  "x-samples-enabled" : false
 }
