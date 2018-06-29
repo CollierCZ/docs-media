@@ -1,5 +1,6 @@
 {
   "swagger" : "2.0",
+  "x-samples-languages" : ["curl"],
   "info" : {
     "description" : "The Personalization API is a read-only REST API that retrieves data about your visitors and their segments. \n\nThe base URL for all requests is `https://engage-api.kenticocloud.com/v3/`. \n\nAll requests to the API must be made securely with HTTPS with [TLS 1.2](https://forums.kenticocloud.com/discussion/46/security-update-tls-v1-1-deprecation) and [authenticated](https://developer.kenticocloud.com/v1/reference#authentication) with a valid API key.\n##  User ID\nAll Personalization API methods work with User ID, which identifies a specific visitor on your website. You can get this value values either by parsing the content of a cookie stored by the tracking code in your browser or by calling a JavaScript method in your website (this is the recommended way).\n\nYou can call the JavaScript function `ket(...)` defined in global scope.\n* User ID – call ket('getUid', function(uid){ console.log('UID: ' + uid); }); in your browser console.\n\nThe method uses a callback with a string argument containing an ID of your visitor. Use the value when building a link to the REST interface.\n\n",
     "version" : "1.0.0",
