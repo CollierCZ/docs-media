@@ -1,0 +1,183 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "The Personalization API is a read-only REST API that retrieves data about your visitors and their segments. \n\nThe base URL for all requests is `https://engage-api.kenticocloud.com/v3/`. \n\nAll requests to the API must be made securely with HTTPS with [TLS 1.2](https://forums.kenticocloud.com/discussion/46/security-update-tls-v1-1-deprecation) and [authenticated](https://developer.kenticocloud.com/v1/reference#authentication) with a valid API key.\n##  User ID\nAll Personalization API methods work with User ID, which identifies a specific visitor on your website. You can get this value values either by parsing the content of a cookie stored by the tracking code in your browser or by calling a JavaScript method in your website (this is the recommended way).\n\nYou can call the JavaScript function `ket(...)` defined in global scope.\n* User ID – call ket('getUid', function(uid){ console.log('UID: ' + uid); }); in your browser console.\n\nThe method uses a callback with a string argument containing an ID of your visitor. Use the value when building a link to the REST interface.\n\n",
+    "version" : "1.0.0",
+    "title" : "Personalization API v3"
+  },
+  "host" : "engage-api.kenticocloud.com",
+  "basePath" : "/v3",
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/visitor/{project_id}/{uid}/segments" : {
+      "get" : {
+        "tags" : [ "Endpoints" ],
+        "summary" : "List segments of a visitor",
+        "description" : "Retrieve the codenames of segments that the specified visitor belongs to.\n### Returns\nA Segments object containing the codenames of all segments the visitor belongs to. If the specified visitor is not a member of any segments, an empty Segments object is returned.\n",
+        "operationId" : "listSegmentsOfVisitor",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "project_id",
+          "in" : "path",
+          "description" : "The ID of your project. Example: `569030c7-52a5-44f5-a243-c5285b3eb24e`.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "uid",
+          "in" : "path",
+          "description" : "The ID of a visitor. Example: `e3e9e191a12b9257`.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/SegmentsObject"
+            },
+            "examples" : {
+              "application/json" : {
+                "segments" : [ {
+                  "codename" : "regular_visitors"
+                }, {
+                  "codename" : "potential_job_candidates"
+                } ]
+              }
+            }
+          },
+          "201" : {
+            "description" : "No results",
+            "schema" : {
+              "$ref" : "#/definitions/SegmentsObject"
+            },
+            "examples" : {
+              "application/json" : {
+                "segments" : [ ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/segment/{project_id}/{segment_codename}/visitors" : {
+      "get" : {
+        "tags" : [ "Endpoints" ],
+        "summary" : "List visitors of a segment.",
+        "description" : "Retrieve all members of a specified segment.\n### Returns\nA Visitors object containing the user IDs of all visitors who belong to the specified segment. If the specified segment does not exist, an empty Visitors object is returned.\n### Paging\nIf the segment contains less than 1000 visitors, their user IDs are all returned together in a single response.\nIf the segment contains more than 1000 visitors, a simple paging mechanism is used:\n\n* The first response contains the first 1000 visitors and a link header containing the URL of the next page of results.\n* The last page (response) does not contain the link header. ",
+        "operationId" : "listVisitorsOfSegment",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "project_id",
+          "in" : "path",
+          "description" : "The ID of your project. Example: `569030c7-52a5-44f5-a243-c5285b3eb24e`.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "segment_codename",
+          "in" : "path",
+          "description" : "The codename of a segment. Example: `potential_job_candidates`. To view or edit the codename of the segment, open the segment in Kentico Cloud and click the **Codename (#)** button in the top right corner.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/VisitorsObject"
+            },
+            "examples" : {
+              "application/json" : {
+                "visitors" : [ {
+                  "uid" : "1111136b4af00000"
+                }, {
+                  "uid" : "1236136b4af00001"
+                } ]
+              }
+            }
+          },
+          "201" : {
+            "description" : "No results",
+            "schema" : {
+              "$ref" : "#/definitions/VisitorsObject"
+            },
+            "examples" : {
+              "application/json" : {
+                "visitors" : [ ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "Bearer" : {
+      "type" : "apiKey",
+      "name" : "Authorization",
+      "in" : "header"
+    }
+  },
+  "definitions" : {
+    "SegmentsObject" : {
+      "type" : "object",
+      "required" : [ "segments" ],
+      "properties" : {
+        "segments" : {
+          "type" : "array",
+          "example" : [ {
+            "codename" : "regular_visitors"
+          }, {
+            "codename" : "potential_job_candidates"
+          } ],
+          "items" : {
+            "$ref" : "#/definitions/Segment"
+          }
+        }
+      }
+    },
+    "Segment" : {
+      "required" : [ "codename" ],
+      "properties" : {
+        "codename" : {
+          "type" : "string",
+          "example" : "potential_job_candidates"
+        }
+      }
+    },
+    "VisitorsObject" : {
+      "type" : "object",
+      "required" : [ "visitors" ],
+      "properties" : {
+        "visitors" : {
+          "type" : "array",
+          "example" : [ {
+            "uid" : "1111136b4af00000"
+          }, {
+            "uid" : "1236136b4af00000"
+          } ],
+          "items" : {
+            "$ref" : "#/definitions/Visitor"
+          }
+        }
+      }
+    },
+    "Visitor" : {
+      "required" : [ "uid" ],
+      "properties" : {
+        "uid" : {
+          "type" : "string",
+          "example" : "1236136b4af00000"
+        }
+      }
+    }
+  },
+  "parameters" : {
+    "projectIdParam" : {
+      "name" : "project_id",
+      "in" : "path",
+      "description" : "The ID of your project. Example: `569030c7-52a5-44f5-a243-c5285b3eb24e`.",
+      "required" : true,
+      "type" : "string"
+    }
+  }
+}
