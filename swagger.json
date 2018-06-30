@@ -48,11 +48,12 @@
           "201" : {
             "description" : "No results",
             "schema" : {
-              "type" : "object",
-              "example" : {
+              "$ref" : "#/definitions/SegmentsObject"
+            },
+            "examples" : {
+              "application/json" : {
                 "segments" : [ ]
-              },
-              "properties" : { }
+              }
             }
           }
         }
@@ -62,7 +63,7 @@
       "get" : {
         "tags" : [ "Endpoints" ],
         "summary" : "List visitors of a segment.",
-        "description" : "Retrieve all members of a specified segment.\n### Returns\nA Visitors object containing the user IDs of all visitors who belong to the specified segment. If the specified segment does not exist, and empty Visitors object is returned.\n### Paging\nIf the segment contains less than 1000 visitors, their user IDs are all returned together in a single response.\nIf the segment contains more than 1000 visitors, a simple paging mechanism is used:\n\n* The first response contains the first 1000 visitors and a link header containing the URL of the next page of results.\n* The last page (response) does not contain the link header. ",
+        "description" : "Retrieve all members of a specified segment.\n### Returns\nA Visitors object containing the user IDs of all visitors who belong to the specified segment. If the specified segment does not exist, an empty Visitors object is returned.\n### Paging\nIf the segment contains less than 1000 visitors, their user IDs are all returned together in a single response.\nIf the segment contains more than 1000 visitors, a simple paging mechanism is used:\n\n* The first response contains the first 1000 visitors and a link header containing the URL of the next page of results.\n* The last page (response) does not contain the link header. ",
         "operationId" : "listVisitorsOfSegment",
         "produces" : [ "application/json" ],
         "parameters" : [ {
@@ -97,11 +98,12 @@
           "201" : {
             "description" : "No results",
             "schema" : {
-              "type" : "object",
-              "example" : {
+              "$ref" : "#/definitions/VisitorsObject"
+            },
+            "examples" : {
+              "application/json" : {
                 "visitors" : [ ]
-              },
-              "properties" : { }
+              }
             }
           }
         }
@@ -177,6 +179,5 @@
       "required" : true,
       "type" : "string"
     }
-  },
-  "x-samples-enabled" : false
+  }
 }
